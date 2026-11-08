@@ -18,23 +18,23 @@ def verify_password(username, password):
 def index():
     html_template = """
     <!DOCTYPE html>
-    <html lang="sw">
+    <html lang="sw" id="html-root">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pocket Option Live Multi-TF AI Bot</title>
         <style>
             body { background-color: #070a13; color: #f8fafc; font-family: Arial, sans-serif; margin: 0; padding: 12px; }
-            .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; }
+            .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; gap: 8px; }
             
-            .brand-container { display: flex; align-items: center; gap: 10px; }
+            .brand-container { display: flex; align-items: center; gap: 8px; }
             
             /* Icon halisi yenye background nyeupe na uwiano kamili wa P na O */
             .po-app-icon {
-                width: 44px;
-                height: 44px;
+                width: 38px;
+                height: 38px;
                 background: #ffffff;
-                border-radius: 14px;
+                border-radius: 12px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -42,13 +42,15 @@ def index():
                 border: 1px solid #e2e8f0;
             }
             
-            .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 12px; animation: pulseLive 1.2s infinite ease-in-out; }
-            @keyframes pulseLive { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+            .header-right { display: flex; align-items: center; gap: 6px; }
             
-            .time-box { background: #0f172a; padding: 5px 10px; border-radius: 5px; font-size: 13px; color: #38bdf8; border: 1px solid #1e293b; }
+            /* Kichagua Lugha (Language Selector) kilichokaa kiufundi juu kabisa */
+            .lang-select { background: #0f172a; color: #38bdf8; border: 1px solid #334155; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; }
+            
+            .time-box { background: #0f172a; padding: 5px 8px; border-radius: 5px; font-size: 11px; color: #38bdf8; border: 1px solid #1e293b; white-space: nowrap; }
             .section-title { font-size: 12px; color: #94a3b8; margin: 12px 0 5px 2px; text-transform: uppercase; font-weight: bold; }
             
-            /* KIASHIRIA CHA KITAALAMU CHA S5 - M1 (MICRO-SCALPER INDICATOR PANEL) */
+            /* KIASHIRIA CHA KITAALAMU CHA S5 - M1 (MICRO-SCALPER LIVE INDICATOR) */
             .indicator-panel { background: linear-gradient(135deg, #0f172a, #1e293b); border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
             .ind-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 6px; }
             .ind-title { font-size: 11px; font-weight: bold; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -93,52 +95,61 @@ def index():
         <div class="header-bar">
             <div class="brand-container">
                 <div class="po-app-icon">
-                    <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="68" cy="48" r="22" fill="#00A3FF"/>
                         <path d="M 16 16 H 48 C 62 16 72 26 72 48 C 72 70 62 80 48 80 H 32 V 90 C 32 94 28 96 24 96 C 19 96 16 92 16 88 V 16 Z" fill="#0047FF"/>
                     </svg>
                 </div>
-                <div class="live-badge">🔴 POCKET OPTION LIVE</div>
             </div>
-            <div class="time-box" id="utc-time">--:--:-- UTC</div>
+            <div class="header-right">
+                <!-- Kipengele cha kuchagua Lugha (Language Selector) Juu Kabisa -->
+                <select class="lang-select" id="lang-picker" onchange="changeLanguage(this.value)">
+                    <option value="sw">🇹🇿 SW</option>
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="zh">🇨🇳 中文</option>
+                </select>
+                <div class="time-box" id="utc-time">--:--:--</div>
+            </div>
         </div>
 
         <!-- KIASHIRIA KIKALI CHA S5 - M1 (MICRO-SCALPER LIVE INDICATOR) -->
         <div class="indicator-panel">
             <div class="ind-header">
-                <span class="ind-title">⚡ MICRO-SCALP INDICATOR (S5-M1 ACTIVE)</span>
-                <span id="ind-status" style="font-size: 10px; color: #22c55e; font-weight: bold;">● LIVE SYNC</span>
+                <span class="ind-title" id="txt-ind-title">⚡ MICRO-SCALP INDICATOR (S5-M1 ACTIVE)</span>
+                <span style="font-size: 10px; color: #22c55e; font-weight: bold;">● LIVE</span>
             </div>
             <div class="ind-grid">
                 <div class="ind-box">
-                    <div class="ind-lbl">Micro-RSI (9)</div>
+                    <div class="ind-lbl" id="txt-lbl-rsi">Micro-RSI (9)</div>
                     <div class="ind-val" id="ind-rsi" style="color: #38bdf8;">--</div>
                 </div>
                 <div class="ind-box">
-                    <div class="ind-lbl">EMA Trend (3/9)</div>
+                    <div class="ind-lbl" id="txt-lbl-ema">EMA Trend</div>
                     <div class="ind-val" id="ind-ema" style="color: #facc15;">--</div>
                 </div>
                 <div class="ind-box">
-                    <div class="ind-lbl">Signal Verdict</div>
+                    <div class="ind-lbl" id="txt-lbl-verdict">Verdict</div>
                     <div class="ind-val" id="ind-verdict" style="color: #34d399;">--</div>
                 </div>
             </div>
         </div>
 
-        <div class="section-title">CHAGUA SOKO:</div>
+        <div class="section-title" id="txt-market-title">CHAGUA SOKO:</div>
         <div class="market-toggle">
             <button class="btn-market active" id="btn-otc" onclick="switchMarket('otc')">⚡ OTC Market</button>
             <button class="btn-market" id="btn-std" onclick="switchMarket('std')">🌐 Standard Market</button>
         </div>
 
-        <div class="section-title">CHAGUA ASSET:</div>
+        <div class="section-title" id="txt-asset-title">CHAGUA ASSET:</div>
         <div class="assets-grid" id="assets-container"></div>
 
-        <div class="section-title">CHAGUA TIME FRAME YA UCHAMBUZI:</div>
+        <div class="section-title" id="txt-tf-title">CHAGUA TIME FRAME YA UCHAMBUZI:</div>
         <div class="timeframe-grid" id="tf-container"></div>
 
         <!-- Kitufe cha Market Scanning -->
-        <button class="btn-analyze" onclick="runAnalysis()">⚡ Market Scanning</button>
+        <button class="btn-analyze" id="btn-scan-text" onclick="runAnalysis()">⚡ Market Scanning</button>
 
         <div class="result-card" id="result-card">
             <div class="scanning-overlay" id="scanning-screen">
@@ -152,19 +163,19 @@ def index():
                 <span id="res-tf" style="color: #34d399; font-weight: bold;">-</span>
             </div>
             <div class="result-row">
-                <span>Bei Halisi ya Soko (Live Price):</span>
+                <span id="txt-res-price">Bei Halisi ya Soko (Live Price):</span>
                 <span id="res-price" style="font-weight: bold; color: #facc15;">-</span>
             </div>
             <div class="result-row">
-                <span>Ishara ya AI (Signal):</span>
+                <span id="txt-res-signal">Ishara ya AI (Signal):</span>
                 <span id="res-signal">-</span>
             </div>
             <div class="result-row">
-                <span>Kufunga Mshumaa (Candle Close):</span>
+                <span id="txt-res-candle">Kufunga Mshumaa (Candle Close):</span>
                 <span class="time-box" id="res-candle">-</span>
             </div>
             <div class="result-row">
-                <span>Usahihi wa Soko (Real Accuracy):</span>
+                <span id="txt-res-acc">Usahihi wa Soko (Real Accuracy):</span>
                 <span id="res-acc" style="font-weight: bold;">-</span>
             </div>
             <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; border-top: 1px solid #334155; padding-top: 6px;" id="res-indicators">
@@ -174,6 +185,111 @@ def index():
         </div>
 
         <script>
+            // Tafsiri za lugha zote (Dictionary)
+            const translations = {
+                sw: {
+                    marketTitle: "CHAGUA SOKO:",
+                    assetTitle: "CHAGUA ASSET:",
+                    tfTitle: "CHAGUA TIME FRAME YA UCHAMBUZI:",
+                    scanBtn: "⚡ Market Scanning",
+                    otcBtn: "⚡ OTC Market",
+                    stdBtn: "🌐 Standard Market",
+                    liveRsiLbl: "Micro-RSI (9)",
+                    liveEmaLbl: "EMA Trend",
+                    liveVerLbl: "Verdict",
+                    priceLbl: "Bei Halisi ya Soko (Live Price):",
+                    signalLbl: "Ishara ya AI (Signal):",
+                    candleLbl: "Kufunga Mshumaa (Candle Close):",
+                    accLbl: "Usahihi wa Soko (Real Accuracy):",
+                    indTitle: "⚡ MICRO-SCALP INDICATOR (S5-M1 ACTIVE)"
+                },
+                en: {
+                    marketTitle: "SELECT MARKET:",
+                    assetTitle: "SELECT ASSET:",
+                    tfTitle: "SELECT ANALYSIS TIMEFRAME:",
+                    scanBtn: "⚡ Market Scanning",
+                    otcBtn: "⚡ OTC Market",
+                    stdBtn: "🌐 Standard Market",
+                    liveRsiLbl: "Micro-RSI (9)",
+                    liveEmaLbl: "EMA Trend",
+                    liveVerLbl: "Verdict",
+                    priceLbl: "Live Market Price:",
+                    signalLbl: "AI Signal:",
+                    candleLbl: "Candle Close:",
+                    accLbl: "Real Accuracy:",
+                    indTitle: "⚡ MICRO-SCALP INDICATOR (S5-M1 ACTIVE)"
+                },
+                fr: {
+                    marketTitle: "CHOISIR LE MARCHÉ:",
+                    assetTitle: "CHOISIR L'ACTIF:",
+                    tfTitle: "CHOISIR L'UNITÉ DE TEMPS:",
+                    scanBtn: "⚡ Analyse du Marché",
+                    otcBtn: "⚡ Marché OTC",
+                    stdBtn: "🌐 Marché Standard",
+                    liveRsiLbl: "Micro-RSI (9)",
+                    liveEmaLbl: "Tendance EMA",
+                    liveVerLbl: "Verdict",
+                    priceLbl: "Prix en Direct:",
+                    signalLbl: "Signal IA:",
+                    candleLbl: "Clôture Bougie:",
+                    accLbl: "Précision Réelle:",
+                    indTitle: "⚡ INDICATEUR MICRO-SCALP (S5-M1 ACTIF)"
+                },
+                es: {
+                    marketTitle: "SELECCIONAR MERCADO:",
+                    assetTitle: "SELECCIONAR ACTIVO:",
+                    tfTitle: "SELECCIONAR MARCO DE TIEMPO:",
+                    scanBtn: "⚡ Escaneo de Mercado",
+                    otcBtn: "⚡ Mercado OTC",
+                    stdBtn: "🌐 Mercado Estándar",
+                    liveRsiLbl: "Micro-RSI (9)",
+                    liveEmaLbl: "Tendencia EMA",
+                    liveVerLbl: "Veredicto",
+                    priceLbl: "Precio en Vivo:",
+                    signalLbl: "Señal de IA:",
+                    candleLbl: "Cierre de Vela:",
+                    accLbl: "Precisión Real:",
+                    indTitle: "⚡ INDICADOR MICRO-SCALP (S5-M1 ACTIVO)"
+                },
+                zh: {
+                    marketTitle: "选择市场:",
+                    assetTitle: "选择资产:",
+                    tfTitle: "选择分析时间周期:",
+                    scanBtn: "⚡ 市场扫描",
+                    otcBtn: "⚡ OTC 市场",
+                    stdBtn: "🌐 标准市场",
+                    liveRsiLbl: "微型 RSI (9)",
+                    liveEmaLbl: "EMA 趋势",
+                    liveVerLbl: "裁决",
+                    priceLbl: "实时市场价格:",
+                    signalLbl: "AI 信号:",
+                    candleLbl: "K线收盘:",
+                    accLbl: "实际准确率:",
+                    indTitle: "⚡ 微型剥头皮指标 (S5-M1 激活)"
+                }
+            };
+
+            let currentLang = 'sw';
+
+            function changeLanguage(lang) {
+                currentLang = lang;
+                const t = translations[lang];
+                document.getElementById('txt-market-title').innerText = t.marketTitle;
+                document.getElementById('txt-asset-title').innerText = t.assetTitle;
+                document.getElementById('txt-tf-title').innerText = t.tfTitle;
+                document.getElementById('btn-scan-text').innerText = t.scanBtn;
+                document.getElementById('btn-otc').innerText = t.otcBtn;
+                document.getElementById('btn-std').innerText = t.stdBtn;
+                document.getElementById('txt-lbl-rsi').innerText = t.liveRsiLbl;
+                document.getElementById('txt-lbl-ema').innerText = t.liveEmaLbl;
+                document.getElementById('txt-lbl-verdict').innerText = t.liveVerLbl;
+                document.getElementById('txt-res-price').innerText = t.priceLbl;
+                document.getElementById('txt-res-signal').innerText = t.signalLbl;
+                document.getElementById('txt-res-candle').innerText = t.candleLbl;
+                document.getElementById('txt-res-acc').innerText = t.accLbl;
+                document.getElementById('txt-ind-title').innerText = t.indTitle;
+            }
+
             function updateUTC() {
                 const now = new Date();
                 document.getElementById('utc-time').innerText = now.toUTCString().split(' ')[4] + " UTC";
@@ -181,7 +297,6 @@ def index():
             setInterval(updateUTC, 1000);
             updateUTC();
 
-            // Kazi maalum ya Kiashiria cha S5 - M1 kinachojisasisha papo hapo kwenye skrini
             function updateMicroIndicator() {
                 const rsi = (Math.random() * 48 + 30).toFixed(1);
                 document.getElementById('ind-rsi').innerText = rsi;
@@ -192,12 +307,12 @@ def index():
                 if (rsi >= 50) {
                     emaSpan.innerText = "BULLISH 📈";
                     emaSpan.style.color = "#22c55e";
-                    verdictSpan.innerText = "BUY 🟢";
+                    verdictSpan.innerText = currentLang === 'sw' ? "NUNUA 🟢" : (currentLang === 'fr' ? "ACHETER 🟢" : (currentLang === 'es' ? "COMPRAR 🟢" : (currentLang === 'zh' ? "买入 🟢" : "BUY 🟢")));
                     verdictSpan.style.color = "#22c55e";
                 } else {
                     emaSpan.innerText = "BEARISH 📉";
                     emaSpan.style.color = "#ef4444";
-                    verdictSpan.innerText = "SELL 🔴";
+                    verdictSpan.innerText = currentLang === 'sw' ? "UZA 🔴" : (currentLang === 'fr' ? "VENDRE 🔴" : (currentLang === 'es' ? "VENDER 🔴" : (currentLang === 'zh' ? "卖出 🔴" : "SELL 🔴")));
                     verdictSpan.style.color = "#ef4444";
                 }
             }
@@ -299,13 +414,13 @@ def index():
                 screen.style.display = 'flex';
 
                 setTimeout(() => {
-                    step.innerText = "Inasoma WebSocket Feed ya " + selectedAsset + "...";
-                    sub.innerText = "Inachakata data za Micro-RSI & EMA kwa " + selectedTF.toUpperCase() + "...";
+                    step.innerText = currentLang === 'sw' ? "Inasoma WebSocket Feed ya soko..." : "Reading market WebSocket feed...";
+                    sub.innerText = currentLang === 'sw' ? "Inachakata data za Micro-RSI & EMA..." : "Processing Micro-RSI & EMA data...";
                 }, 800);
 
                 setTimeout(() => {
-                    step.innerText = "Inapima nguvu ya uamuzi wa soko la haraka...";
-                    sub.innerText = "Inazalisha Usahihi Halisi na Kutengeneza Mdundo...";
+                    step.innerText = currentLang === 'sw' ? "Inapima nguvu ya uamuzi..." : "Evaluating market momentum...";
+                    sub.innerText = currentLang === 'sw' ? "Inazalisha Usahihi na Mdundo..." : "Generating accuracy and beat...";
                 }, 1600);
 
                 setTimeout(() => {
@@ -322,7 +437,7 @@ def index():
                     let realAccuracy = (Math.random() * 20 + 78).toFixed(1);
 
                     let isBuy = rsiVal >= 50;
-                    let signalText = isBuy ? "🟢 BUY ⬆ (MICRO-SCALP SIGNAL)" : "🔴 SELL ⬇ (MICRO-SCALP SIGNAL)";
+                    let signalText = isBuy ? "🟢 BUY ⬆ (MICRO-SCALP)" : "🔴 SELL ⬇ (MICRO-SCALP)";
                     let signalClass = isBuy ? "buy-signal" : "sell-signal";
 
                     const sigEl = document.getElementById('res-signal');
@@ -330,7 +445,7 @@ def index():
                     sigEl.className = signalClass;
 
                     const accEl = document.getElementById('res-acc');
-                    accEl.innerText = realAccuracy + "% (Scalp Verified)";
+                    accEl.innerText = realAccuracy + "% (Verified)";
                     accEl.style.color = realAccuracy >= 80 ? "#22c55e" : "#facc15";
 
                     const now = new Date();
@@ -340,9 +455,9 @@ def index():
                     else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
 
                     now.setSeconds(now.getSeconds() + addSec);
-                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + " Close)";
+                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + ")";
                     
-                    document.getElementById('res-indicators').innerText = `Kiashiria: Micro-RSI (9): ${rsiVal} | EMA Trend: Active | Scalp Mode`;
+                    document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Scalp Mode Active`;
 
                     playVictoryBeat(isBuy);
                 }, 2400);
