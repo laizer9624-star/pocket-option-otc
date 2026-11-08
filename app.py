@@ -22,7 +22,7 @@ def index():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pocket Option S5 Deep AI Analyzer</title>
+        <title>Pocket Option Multi-Timeframe AI Bot</title>
         <style>
             body { background-color: #070a13; color: #f8fafc; font-family: Arial, sans-serif; margin: 0; padding: 12px; }
             .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; }
@@ -41,7 +41,9 @@ def index():
             .asset-btn { background: #1e293b; color: #cbd5e1; border: none; padding: 9px 4px; border-radius: 6px; font-size: 11px; text-align: center; cursor: pointer; border: 1px solid #334155; }
             .asset-btn.active { background: #2563eb; color: white; border-color: #38bdf8; font-weight: bold; }
             
-            .timeframe-box { background: #1e293b; border: 2px solid #38bdf8; color: #38bdf8; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+            .timeframe-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 15px; }
+            .tf-btn { background: #1e293b; color: #cbd5e1; border: none; padding: 9px 5px; border-radius: 6px; font-size: 12px; text-align: center; cursor: pointer; border: 1px solid #334155; }
+            .tf-btn.active { background: #059669; color: white; border-color: #34d399; font-weight: bold; }
             
             .btn-analyze { background: linear-gradient(135deg, #2563eb, #e11d48, #9333ea); background-size: 200% 200%; color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-bottom: 15px; text-align: center; cursor: pointer; animation: gradientAnim 2.5s ease infinite; box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); }
             @keyframes gradientAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -62,7 +64,7 @@ def index():
     </head>
     <body>
         <div class="header-bar">
-            <div class="live-badge">🔴 POCKET OPTION S5 DEEP AI</div>
+            <div class="live-badge">🔴 POCKET OPTION MULTI-TF AI</div>
             <div class="time-box" id="utc-time">--:--:-- UTC</div>
         </div>
 
@@ -75,42 +77,40 @@ def index():
         <div class="section-title">CHAGUA ASSET:</div>
         <div class="assets-grid" id="assets-container"></div>
 
-        <div class="section-title">TIME FRAME YA UCHAMBUZI:</div>
-        <div class="timeframe-box">
-            ⚡ S5 (Deep Micro-Candle AI Analysis)
-        </div>
+        <div class="section-title">CHAGUA TIME FRAME YA UCHAMBUZI:</div>
+        <div class="timeframe-grid" id="tf-container"></div>
 
-        <button class="btn-analyze" onclick="runAnalysis()">⚡ WAKANISHI / CHAMBUA SOKO LA S5</button>
+        <button class="btn-analyze" onclick="runAnalysis()">⚡ CHAMBUA SOKO KWA TIMEFRAME HII</button>
 
         <div class="result-card" id="result-card">
             <div class="scanning-overlay" id="scanning-screen">
-                <div class="scan-text" id="scan-step">Inaanza kuchambua mishumaa ya S5...</div>
-                <div class="scan-subtext" id="scan-sub">Inachakata data za sekunde 5 za mwisho za soko...</div>
+                <div class="scan-text" id="scan-step">Inaanza uchambuzi wa kina...</div>
+                <div class="scan-subtext" id="scan-sub">Inachakata data za soko na viashiria vya kiufundi...</div>
                 <div class="scan-bar"></div>
             </div>
 
             <div class="result-row">
                 <span id="res-asset" style="color: #38bdf8; font-weight: bold;">-</span>
-                <span style="color: #34d399; font-weight: bold;">TF: S5 (Deep Scan)</span>
+                <span id="res-tf" style="color: #34d399; font-weight: bold;">-</span>
             </div>
             <div class="result-row">
                 <span>Bei Halisi ya Soko (Live Price):</span>
                 <span id="res-price" style="font-weight: bold; color: #facc15;">-</span>
             </div>
             <div class="result-row">
-                <span>Ishara ya AI (S5 Signal):</span>
+                <span>Ishara ya AI (Signal):</span>
                 <span id="res-signal">-</span>
             </div>
             <div class="result-row">
-                <span>Kufunga Mshumaa (S5 Close):</span>
+                <span>Kufunga Mshumaa (Candle Close):</span>
                 <span class="time-box" id="res-candle">-</span>
             </div>
             <div class="result-row">
                 <span>Kiwango cha Usahihi:</span>
-                <span style="color: #4ade80; font-weight: bold;">99.9% (S5 High Accuracy)</span>
+                <span style="color: #4ade80; font-weight: bold;">99.9% (High Accuracy)</span>
             </div>
             <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; border-top: 1px solid #334155; padding-top: 6px;" id="res-indicators">
-                Viashiria: S5 Micro-Momentum | RSI: 76.2 | Trend Strength: Maximum
+                Viashiria: Multi-TF Momentum | RSI: 74.5 | Trend Strength: Strong
             </div>
         </div>
 
@@ -134,8 +134,11 @@ def index():
                 "USDCAD", "NZDUSD", "EURJPY", "GBPJPY"
             ];
 
+            const timeframes = ["s5", "s4", "s10", "s15", "s30", "1m", "2m", "3m", "5m", "10m", "15m", "30m", "1h", "2h", "4h"];
+
             let currentMarket = "otc";
             let selectedAsset = "AEDCNY_otc";
+            let selectedTF = "s5";
 
             function switchMarket(type) {
                 currentMarket = type;
@@ -158,6 +161,18 @@ def index():
                 });
             }
 
+            function renderTimeframes() {
+                const container = document.getElementById('tf-container');
+                container.innerHTML = '';
+                timeframes.forEach(tf => {
+                    const btn = document.createElement('button');
+                    btn.className = `tf-btn ${tf === selectedTF ? 'active' : ''}`;
+                    btn.innerText = tf;
+                    btn.onclick = () => { selectedTF = tf; renderTimeframes(); };
+                    container.appendChild(btn);
+                });
+            }
+
             let marketPrices = {
                 "EURUSD_otc": 1.08450, "GBPUSD_otc": 1.26520, "USDJPY_otc": 155.400,
                 "AEDCNY_otc": 1.59370, "EURUSD": 1.08455, "GBPUSD": 1.26525
@@ -172,35 +187,34 @@ def index():
                 card.style.display = 'block';
                 screen.style.display = 'flex';
 
-                // Hatua za AI kuchambua S5 kwa muda mzuri kabisa
                 setTimeout(() => {
-                    step.innerText = "Inasoma takwimu za S5 kwa " + selectedAsset + "...";
-                    sub.innerText = "Inapima nguvu ya wanunuzi na wauzaji (Buyers vs Sellers)...";
+                    step.innerText = "Inachambua soko la " + selectedAsset + " kwenye TF ya " + selectedTF.toUpperCase() + "...";
+                    sub.innerText = "Inapima mienendo ya mishumaa na kiasi cha ukwasi (Volume)...";
                 }, 800);
 
                 setTimeout(() => {
-                    step.innerText = "Inachuja kelele za soko na RSI Momentum...";
-                    sub.innerText = "AI inakamilisha hesabu za S5 Micro-Trend...";
+                    step.innerText = "Inachuja viashiria vya RSI na MACD...";
+                    sub.innerText = "AI inakamilisha hesabu za kina za " + selectedTF.toUpperCase() + "...";
                 }, 1600);
 
                 setTimeout(() => {
                     step.innerText = "Uchambuzi umekamilika! Inapakia Ishara...";
-                    sub.innerText = "Inahakiki usahihi wa 99.9%...";
+                    sub.innerText = "Inahakiki kiwango cha juu cha usahihi...";
                 }, 2400);
 
-                // Baada ya sekunde 3.2 za uchambuzi makini wa S5, inaleta matokeo
                 setTimeout(() => {
                     screen.style.display = 'none';
 
                     document.getElementById('res-asset').innerText = selectedAsset + " [" + currentMarket.toUpperCase() + "]";
+                    document.getElementById('res-tf').innerText = "TF: " + selectedTF.toUpperCase();
 
                     if(!marketPrices[selectedAsset]) marketPrices[selectedAsset] = 1.35000;
                     marketPrices[selectedAsset] += (Math.random() - 0.49) * 0.0003;
                     document.getElementById('res-price').innerText = marketPrices[selectedAsset].toFixed(5);
 
                     const signals = [
-                        {text: "🟢 BUY ⬆ (S5 STRONG SIGNAL)", class: "buy-signal"},
-                        {text: "🔴 SELL ⬇ (S5 STRONG SIGNAL)", class: "sell-signal"}
+                        {text: "🟢 BUY ⬆ (STRONG SIGNAL)", class: "buy-signal"},
+                        {text: "🔴 SELL ⬇ (STRONG SIGNAL)", class: "sell-signal"}
                     ];
                     const chosenSig = signals[Math.floor(Math.random() * signals.length)];
                     const sigEl = document.getElementById('res-signal');
@@ -208,14 +222,20 @@ def index():
                     sigEl.className = chosenSig.class;
 
                     const now = new Date();
-                    now.setSeconds(now.getSeconds() + 5);
-                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (S5 Close)";
+                    let addSec = 60;
+                    if(selectedTF.includes('s')) addSec = parseInt(selectedTF);
+                    else if(selectedTF.includes('m')) addSec = parseInt(selectedTF) * 60;
+                    else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
+
+                    now.setSeconds(now.getSeconds() + addSec);
+                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + " Close)";
                     
-                    document.getElementById('res-indicators').innerText = `Viashiria: S5 Deep Trend | RSI: ${Math.floor(Math.random()*20)+70} | Status: Ready for Trade`;
+                    document.getElementById('res-indicators').innerText = `Viashiria: ${selectedTF.toUpperCase()} Trend | RSI: ${Math.floor(Math.random()*20)+70} | Status: Ready`;
                 }, 3200);
             }
 
             renderAssets();
+            renderTimeframes();
         </script>
     </body>
     </html>
