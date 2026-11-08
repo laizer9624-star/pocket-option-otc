@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 # Weka hapa jina la mtumiaji na nenosiri unalolitaka kulinda tovuti yako
 users = {
-    "Porket option": "54321"}
+    "Porket option": "54321"
+}
 
 # Ulinzi umeondolewa
 
