@@ -24,17 +24,21 @@ def index():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Pocket Option OTC Dashboard</title>
         <style>
-            body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; text-align: center; }
-            .card { background: #1e293b; padding: 20px; border-radius: 10px; max-width: 400px; margin: 50px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-            h1 { color: #38bdf8; font-size: 24px; }
-            p { color: #94a3b8; }
+            body { background: #0f172a; color: #ffffff; font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; }
+            .header { background: #1e293b; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+            h2 { color: #38bdf8; margin: 0; font-size: 18px; }
+            .user-info { color: #4ade80; font-size: 14px; }
+            .container { flex: 1; width: 100%; height: 100%; }
+            iframe { width: 100%; height: 100%; border: none; background: #0f172a; }
         </style>
     </head>
     <body>
-        <div class="card">
-            <h1>Pocket Option OTC Dashboard</h1>
-            <p>Hali ya Mfumo: <strong style="color: #4ade80;">Iko Hewani & Salama</strong></p>
-            <p>Umeingia kama: <strong>PorketOption</strong></p>
+        <div class="header">
+            <h2>Pocket Option OTC Dashboard</h2>
+            <div class="user-info">Imeingia: PorketOption</div>
+        </div>
+        <div class="container">
+            <iframe src="https://pocketoption.com" title="Pocket Option Terminal"></iframe>
         </div>
     </body>
     </html>
