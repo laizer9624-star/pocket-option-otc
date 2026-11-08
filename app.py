@@ -5,7 +5,7 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 users = {
-    "Porket option": "54321"
+    "PorketOption": "54321"
 }
 
 @auth.verify_password
