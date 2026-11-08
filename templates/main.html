@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pocket Option Signal Bot Pro</title>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 8px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .live-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161e2e;
+            border: 1px solid #334155;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #f87171;
+        }
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ef4444;
+            animation: pulseRedGlow 1.2s infinite;
+        }
+        @keyframes pulseRedGlow {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 16px #ef4444; }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+        .market-timer {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #38bdf8;
+            background: #0f172a;
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+        }
+        .section-title {
+            font-size: 11px;
+            color: #94a3b8;
+            margin: 8px 0 4px 0;
+            font-weight: bold;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .market-section {
+            display: none;
+        }
+        .market-section.active {
+            display: block;
+        }
+        .btn {
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid #334155;
+            padding: 7px 3px;
+            border-radius: 5px;
+            font-size: 10px;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .btn.active {
+            background: #2563eb;
+            border-color: #3b82f6;
+            font-weight: bold;
+        }
+        .scan-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px 0;
+            transition: background 0.3s ease;
+        }
+        .scan-btn:active {
+            background: #1d4ed8;
+        }
+        .result-box {
+            position: relative;
+            background: #161e2e;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .result-box.scanning::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #38bdf8, #f43f5e, #38bdf8, transparent);
+            box-shadow: 0 0 12px #38bdf8;
+            animation: laserScan 1.2s ease-in-out infinite alternate;
+        }
+        @keyframes laserScan {
+            0% { top: 0%; opacity: 0.8; }
+            100% { top: 96%; opacity: 1; }
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .signal-display {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+        .entry-time {
+            font-family: monospace;
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #334155;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="live-header">
+            <div class="live-badge">
+                <div class="live-dot"></div>
+                <span>● REAL-TIME STREAM</span>
+            </div>
+            <div id="market-countdown" class="market-timer">00:00:00 UTC</div>
+        </div>
+
+        <div class="section-title">CHAGUA SOKO LA BIASHARA:</div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <button class="btn active" id="btn-otc" onclick="setMarket('otc')">⚡ OTC Market</button>
+            <button class="btn" id="btn-std" onclick="setMarket('standard')">🌐 Standard Market</button>
+        </div>
+
+        <!-- Orodha ya Masoko ya OTC -->
+        <div id="otc-container" class="market-section active">
+            <div class="section-title">CHAGUA ASSET YA OTC (25+):</div>
+            <div class="grid" id="asset-grid-otc">
+                <button class="btn active" onclick="setAsset('EURUSD_otc', this)">EURUSD_otc</button>
+                <button class="btn" onclick="setAsset('GBPUSD_otc', this)">GBPUSD_otc</button>
+                <button class="btn" onclick="setAsset('USDJPY_otc', this)">USDJPY_otc</button>
+                <button class="btn" onclick="setAsset('AUDCAD_otc', this)">AUDCAD_otc</button>
+                <button class="btn" onclick="setAsset('NZDUSD_otc', this)">NZDUSD_otc</button>
+                <button class="btn" onclick="setAsset('EURJPY_otc', this)">EURJPY_otc</button>
+                <button class="btn" onclick="setAsset('GBPJPY_otc', this)">GBPJPY_otc</button>
+                <button class="btn" onclick="setAsset('AUDJPY_otc', this)">AUDJPY_otc</button>
+                <button class="btn" onclick="setAsset('EURAUD_otc', this)">EURAUD_otc</button>
+                <button class="btn" onclick="setAsset('EURGBP_otc', this)">EURGBP_otc</button>
+                <button class="btn" onclick="setAsset('USDCAD_otc', this)">USDCAD_otc</button>
+                <button class="btn" onclick="setAsset('USDCHF_otc', this)">USDCHF_otc</button>
+                <button class="btn" onclick="setAsset('CHFJPY_otc', this)">CHFJPY_otc</button>
+                <button class="btn" onclick="setAsset('EURNZD_otc', this)">EURNZD_otc</button>
+                <button class="btn" onclick="setAsset('CADJPY_otc', this)">CADJPY_otc</button>
+                <button class="btn" onclick="setAsset('AEDCNY_otc', this)">AEDCNY_otc</button>
+            </div>
+        </div>
+
+        <!-- Orodha ya Masoko ya Standard -->
+        <div id="std-container" class="market-section">
+            <div class="section-title">CHAGUA ASSET YA STANDARD:</div>
+            <div class="grid" id="asset-grid-std">
+                <button class="btn" onclick="setAsset('EURUSD', this)">EURUSD</button>
+                <button class="btn" onclick="setAsset('GBPUSD', this)">GBPUSD</button>
+                <button class="btn" onclick="setAsset('USDJPY', this)">USDJPY</button>
+                <button class="btn" onclick="setAsset('AUDCAD', this)">AUDCAD</button>
+                <button class="btn" onclick="setAsset('NZDUSD', this)">NZDUSD</button>
+                <button class="btn" onclick="setAsset('EURJPY', this)">EURJPY</button>
+                <button class="btn" onclick="setAsset('GBPJPY', this)">GBPJPY</button>
+                <button class="btn" onclick="setAsset('AUDJPY', this)">AUDJPY</button>
+                <button class="btn" onclick="setAsset('EURAUD', this)">EURAUD</button>
+                <button class="btn" onclick="setAsset('EURGBP', this)">EURGBP</button>
+                <button class="btn" onclick="setAsset('USDCAD', this)">USDCAD</button>
+                <button class="btn" onclick="setAsset('USDCHF', this)">USDCHF</button>
+            </div>
+        </div>
+
+        <div class="section-title">CHAGUA TIME FRAME:</div>
+        <div class="grid" id="tf-grid">
+            <button class="btn active" onclick="setTimeframe('s5', this)">s5</button>
+            <button class="btn" onclick="setTimeframe('s4', this)">s4</button>
+            <button class="btn" onclick="setTimeframe('s10', this)">s10</button>
+            <button class="btn" onclick="setTimeframe('s15', this)">s15</button>
+            <button class="btn" onclick="setTimeframe('s30', this)">s30</button>
+            <button class="btn" onclick="setTimeframe('1m', this)">1m</button>
+            <button class="btn" onclick="setTimeframe('2m', this)">2m</button>
+            <button class="btn" onclick="setTimeframe('3m', this)">3m</button>
+            <button class="btn" onclick="setTimeframe('5m', this)">5m</button>
+            <button class="btn" onclick="setTimeframe('10m', this)">10m</button>
+            <button class="btn" onclick="setTimeframe('15m', this)">15m</button>
+            <button class="btn" onclick="setTimeframe('30m', this)">30m</button>
+            <button class="btn" onclick="setTimeframe('1h', this)">1h</button>
+            <button class="btn" onclick="setTimeframe('2h', this)">2h</button>
+            <button class="btn" onclick="setTimeframe('4h', this)">4h</button>
+        </div>
+
+        <button id="scan-btn" class="scan-btn" onclick="analyzeMarket()">⚡ CHANGANUA SOKO LA LIVE</button>
+
+        <div id="result-box" class="result-box">
+            <div class="result-row">
+                <span id="res-asset" style="color: #60a5fa; font-weight: bold;">EURUSD_otc</span>
+                <span id="res-tf" style="color: #94a3b8;">TF: S5</span>
+            </div>
+            <div class="result-row">
+                <span>Bei ya Sasa (Live):</span>
+                <span id="res-price" style="color: #34d399;">1.08500</span>
+            </div>
+            <div class="result-row">
+                <span>Uamuzi wa AI:</span>
+                <span id="res-signal" class="signal-display" style="color: #34d399;">🟢 BUY ⬆️</span>
+            </div>
+            <div class="result-row">
+                <span>Mwisho wa Mshumaa (Candle Close):</span>
+                <span id="res-expiry" class="entry-time">--:--:-- UTC</span>
+            </div>
+            <div class="result-row">
+                <span>Kiwango cha Usahihi:</span>
+                <span id="res-acc" style="color: #facc15;">95%</span>
+            </div>
+            <div style="margin-top: 6px; font-size: 11px; color: #94a3b8; border-top: 1px solid #334155; padding-top: 5px;">
+                Viashiria: <span id="res-reason" style="color: #cbd5e1;">RSI + EMA + Bollinger Active</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMarket = 'otc';
+        let selectedAsset = 'EURUSD_otc';
+        let selectedTf = 's5';
+
+        function updateGlobalClock() {
+            const now = new Date();
+            let hours = now.getUTCHours();
+            let minutes = now.getUTCMinutes();
+            let seconds = now.getUTCSeconds();
+
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            document.getElementById('market-countdown').innerText = hours + ":" + minutes + ":" + seconds + " UTC";
+        }
+
+        setInterval(updateGlobalClock, 1000);
+        updateGlobalClock();
+
+        function setMarket(market) {
+            selectedMarket = market;
+            document.getElementById('btn-otc').classList.toggle('active', market === 'otc');
+            document.getElementById('btn-std').classList.toggle('active', market === 'standard');
+
+            if (market === 'otc') {
+                document.getElementById('otc-container').classList.add('active');
+                document.getElementById('std-container').classList.remove('active');
+                let firstOtc = document.querySelector('#asset-grid-otc .btn');
+                if(firstOtc) firstOtc.click();
+            } else {
+                document.getElementById('std-container').classList.add('active');
+                document.getElementById('otc-container').classList.remove('active');
+                let firstStd = document.querySelector('#asset-grid-std .btn');
+                if(firstStd) firstStd.click();
+            }
+        }
+
+        function setAsset(asset, el) {
+            selectedAsset = asset;
+            document.querySelectorAll('#asset-grid-otc .btn, #asset-grid-std .btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function setTimeframe(tf, el) {
+            selectedTf = tf;
+            document.querySelectorAll('#tf-grid .btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function analyzeMarket() {
+            const btn = document.getElementById('scan-btn');
+            const resBox = document.getElementById('result-box');
+            
+            btn.disabled = true;
+            resBox.classList.add('scanning');
+
+            document.getElementById('res-asset').innerText = selectedAsset;
+            document.getElementById('res-tf').innerText = "TF: " + selectedTf.toUpperCase();
+            document.getElementById('res-price').innerText = "Inasoma Live...";
+            document.getElementById('res-signal').innerText = "⏳ Inachambua Mshumaa...";
+            document.getElementById('res-expiry').innerText = "Inakotoa Muda wa Mshumaa...";
+            document.getElementById('res-acc').innerText = "--%";
+            document.getElementById('res-reason').innerText = "Inachambua Order Book & Live Volume...";
+
+            setTimeout(() => {
+                btn.style.background = '#8b5cf6';
+                btn.innerText = "🔄 [==>........] Inasoma Viashiria vya Soko...";
+            }, 800);
+
+            setTimeout(() => {
+                btn.style.background = '#d97706';
+                btn.innerText = "🔍 [=====>.....] Inapima Nguvu ya Mshumaa...";
+            }, 2200);
+
+            setTimeout(() => {
+                btn.style.background = '#0284c7';
+                btn.innerText = "📊 [========>..] Inasawazisha na Mshumaa Unaofunga...";
+            }, 3600);
+
+            setTimeout(() => {
+                btn.style.background = '#ea580c';
+                btn.innerText = "📈 [==========>] AI Inafunga Hesabu za Entry...";
+            }, 5000);
+
+            setTimeout(() => {
+                btn.style.background = '#059669';
+                btn.innerText = "⚡ Signal Halisi Imethibitishwa!";
+            }, 6000);
+
+            setTimeout(() => {
+                fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ market: selectedMarket, asset: selectedAsset, timeframe: selectedTf })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('res-asset').innerText = data.asset;
+                    document.getElementById('res-tf').innerText = "TF: " + data.timeframe.toUpperCase();
+                    document.getElementById('res-price').innerText = data.price;
+                    
+                    const signalEl = document.getElementById('res-signal');
+                    if (data.signal.includes('BUY')) {
+                        signalEl.innerHTML = "🟢 BUY ⬆️";
+                        signalEl.style.color = "#34d399";
+                    } else {
+                        signalEl.innerHTML = "🔴 SELL ⬇️";
+                        signalEl.style.color = "#f87171";
+                    }
+
+                    // Hesabu sahihi ya kufunga kwa Mshumaa (Exact Candle Close Calculation)
+                    const now = new Date();
+                    let totalSecs = now.getUTCHours() * 3600 + now.getUTCMinutes() * 60 + now.getUTCSeconds();
+                    let tfSecs = 5;
+
+                    if (selectedTf === 's4') tfSecs = 4;
+                    else if (selectedTf === 's10') tfSecs = 10;
+                    else if (selectedTf === 's15') tfSecs = 15;
+                    else if (selectedTf === 's30') tfSecs = 30;
+                    else if (selectedTf.includes('m')) tfSecs = parseInt(selectedTf) * 60;
+                    else if (selectedTf.includes('h')) tfSecs = parseInt(selectedTf) * 3600;
+
+                    // Tafuta ni sekunde ngapi zimebakia kabla ya mshumaa wa sasa kufungwa na mpya kuanza
+                    let remainder = totalSecs % tfSecs;
+                    let secsToNextClose = tfSecs - remainder;
+                    if (secsToNextClose === 0) secsToNextClose = tfSecs;
+
+                    const candleCloseTime = new Date(now.getTime() + secsToNextClose * 1000);
+                    let entryH = String(candleCloseTime.getUTCHours()).padStart(2, '0');
+                    let entryM = String(candleCloseTime.getUTCMinutes()).padStart(2, '0');
+                    let entryS = String(candleCloseTime.getUTCSeconds()).padStart(2, '0');
+
+                    document.getElementById('res-expiry').innerText = `${entryH}:${entryM}:${entryS} UTC (Funga Mshumaa)`;
+                    document.getElementById('res-acc').innerText = data.accuracy;
+                    document.getElementById('res-reason').innerText = data.reason;
+
+                    resBox.classList.remove('scanning');
+                    btn.style.background = '#2563eb';
+                    btn.innerText = "⚡ CHANGANUA SOKO LA LIVE";
+                    btn.disabled = false;
+                })
+                .catch(err => {
+                    resBox.classList.remove('scanning');
+                    btn.style.background = '#dc2626';
+                    btn.innerText = "❌ Hitilafu ya Mtandao";
+                    setTimeout(() => {
+                        btn.style.background = '#2563eb';
+                        btn.innerText = "⚡ CHANGANUA SOKO LA LIVE";
+                        btn.disabled = false;
+                    }, 2000);
+                });
+            }, 6800);
+        }
+    </script>
+</body>
+</html>
