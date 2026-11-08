@@ -103,7 +103,7 @@ def index():
                         <path d="M 16 16 H 48 C 62 16 72 26 72 48 C 72 70 62 80 48 80 H 32 V 90 C 32 94 28 96 24 96 C 19 96 16 92 16 88 V 16 Z" fill="#0047FF"/>
                     </svg>
                 </div>
-                <div class="live-badge">🔴 POCKET OPTION</div>
+                <div class="live-badge">🔴 POCKET OPTION LIVE</div>
             </div>
             <div class="header-right">
                 <!-- Kipengele cha kuchagua Lugha (Language Selector) -->
@@ -463,7 +463,7 @@ def index():
                     
                     document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Scalp Mode Active`;
 
-                    playVictoryByte(isBuy);
+                    playVictoryBeat(isBuy);
                 }, 2400);
             }
 
