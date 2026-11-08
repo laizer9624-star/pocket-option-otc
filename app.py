@@ -42,10 +42,13 @@ def index():
                 border: 1px solid #e2e8f0;
             }
             
+            .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 4px; font-size: 11px; animation: pulseLive 1.2s infinite ease-in-out; white-space: nowrap; }
+            @keyframes pulseLive { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+            
             .header-right { display: flex; align-items: center; gap: 6px; }
             
             /* Kichagua Lugha (Language Selector) kilichokaa kiufundi juu kabisa */
-            .lang-select { background: #0f172a; color: #38bdf8; border: 1px solid #334155; padding: 5px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; }
+            .lang-select { background: #0f172a; color: #38bdf8; border: 1px solid #334155; padding: 5px 6px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; }
             
             .time-box { background: #0f172a; padding: 5px 8px; border-radius: 5px; font-size: 11px; color: #38bdf8; border: 1px solid #1e293b; white-space: nowrap; }
             .section-title { font-size: 12px; color: #94a3b8; margin: 12px 0 5px 2px; text-transform: uppercase; font-weight: bold; }
@@ -100,9 +103,10 @@ def index():
                         <path d="M 16 16 H 48 C 62 16 72 26 72 48 C 72 70 62 80 48 80 H 32 V 90 C 32 94 28 96 24 96 C 19 96 16 92 16 88 V 16 Z" fill="#0047FF"/>
                     </svg>
                 </div>
+                <div class="live-badge">🔴 POCKET OPTION</div>
             </div>
             <div class="header-right">
-                <!-- Kipengele cha kuchagua Lugha (Language Selector) Juu Kabisa -->
+                <!-- Kipengele cha kuchagua Lugha (Language Selector) -->
                 <select class="lang-select" id="lang-picker" onchange="changeLanguage(this.value)">
                     <option value="sw">🇹🇿 SW</option>
                     <option value="en">🇬🇧 EN</option>
@@ -459,7 +463,7 @@ def index():
                     
                     document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Scalp Mode Active`;
 
-                    playVictoryBeat(isBuy);
+                    playVictoryByte(isBuy);
                 }, 2400);
             }
 
