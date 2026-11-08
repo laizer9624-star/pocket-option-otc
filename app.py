@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Icon yenye background nyeupe na nembo iliyokaa kwa usahihi ikifunika kidogo O */
+            /* Icon yenye background nyeupe na herufi P inayofunika kancha tu ya O */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -82,13 +82,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Herufi P imepanuliwa kushika robo tatu na kufunika kidogo duara la O upande wa kulia -->
+                <!-- Herufi P inafunika kancha tu ya duara la O kama inavyotakiwa -->
                 <div class="po-app-icon">
                     <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Duara la O la cyan nyuma kidogo -->
-                        <circle cx="68" cy="50" r="23" fill="#00A3FF"/>
-                        <!-- Herufi P ya bluu inayofunika kwa mbele kidogo O -->
-                        <path d="M 16 14 H 50 C 68 14 80 26 80 50 C 80 74 68 86 50 86 H 32 V 92 C 32 96 28 98 24 98 C 19 98 16 94 16 90 V 14 Z" fill="#0047FF"/>
+                        <!-- Duara la O la cyan nyuma -->
+                        <circle cx="68" cy="48" r="22" fill="#00A3FF"/>
+                        <!-- Herufi P ya bluu inayojaza robo tatu na kufunika kancha tu pembeni ya O -->
+                        <path d="M 16 16 H 48 C 62 16 72 26 72 48 C 72 70 62 80 48 80 H 32 V 90 C 32 94 28 96 24 96 C 19 96 16 92 16 88 V 16 Z" fill="#0047FF"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
@@ -304,4 +304,4 @@ def index():
     return render_template_string(html_template)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port5000)
