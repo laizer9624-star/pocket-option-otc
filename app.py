@@ -1,8 +1,20 @@
 from flask import Flask, render_template, request, jsonify
+from flask_httpauth import HTTPBasicAuth
 import random
 import time
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
+
+# Weka hapa jina la mtumiaji na nenosiri unalolitaka kulinda tovuti yako
+users = {
+    "admin": "12345"
+}
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and users[username] == password:
+        return username
 
 # Hifadhi ya bei za ndani kwa ajili ya usomaji wa papo hapo (Direct Live Sync)
 live_cache = {
@@ -13,6 +25,7 @@ live_cache = {
 }
 
 @app.route('/')
+@auth.login_required
 def index():
     return render_template('main.html')
 
@@ -53,9 +66,6 @@ def analyze():
     move_1min = f"±{random.randint(12, 28)} pips"
     level_below = f"{random.randint(5, 18)} pips"
     rsi_display = f"{rsi_val}"
-
-    indicators_list = [trend_1h, ema_50_200, momentum]
-    up_count = sum(1 for x in indicators_list if '🟢' in x or 'BULLISH' in x or 'STRONG' in x)
 
     if rsi_val > 53:
         signal = "🟢 BUY (CALL) ⬆️"
