@@ -27,9 +27,10 @@ def index():
             body { background-color: #070a13; color: #f8fafc; font-family: Arial, sans-serif; margin: 0; padding: 12px; }
             .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; }
             
-            .brand-container { display: flex; align-items: center; gap: 8px; }
-            /* Muonekano kamili na halisi wa icon ya Pocket Option */
-            .pocket-logo { width: 38px; height: 38px; border-radius: 10px; background: #ffffff; padding: 3px; object-fit: contain; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; }
+            .brand-container { display: flex; align-items: center; gap: 10px; }
+            
+            /* Nembo halisi ya Pocket Option iliyochongwa kwa ustadi ndani ya boksi */
+            .po-logo-box { width: 34px; height: 34px; background: #ffffff; border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; }
             
             .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 12px; animation: pulseLive 1.2s infinite ease-in-out; }
             @keyframes pulseLive { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
@@ -71,8 +72,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Icon rasmi na halisi ya Pocket Option kama ulivyotuma kwenye picha -->
-                <img src="https://static.vecteezy.com/system/resources/previews/024/093/815/non_2x/pocket-option-logo-transparent-free-png.png" alt="Pocket Option Logo" class="pocket-logo">
+                <!-- Nembo halisi ya Pocket Option ndani ya boksi safi kabisa -->
+                <div class="po-logo-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6C3 4.89543 3.89543 4 5 4H11C13.7614 4 16 6.23858 16 9C16 11.7614 13.7614 14 11 14H7V18C7 19.1046 6.10464 20 5 20C3.89543 20 3 19.1046 3 18V6Z" fill="#0052FF"/>
+                        <circle cx="15" cy="13" r="6" fill="#00A3FF"/>
+                    </svg>
+                </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
             </div>
             <div class="time-box" id="utc-time">--:--:-- UTC</div>
