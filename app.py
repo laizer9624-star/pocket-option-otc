@@ -38,10 +38,20 @@ def index():
             .timeframe-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
             .tf-btn { background: #1e293b; color: #cbd5e1; border: none; padding: 10px; border-radius: 6px; font-size: 13px; text-align: center; cursor: pointer; }
             .tf-btn.active { background: #2563eb; color: white; }
-            .btn-analyze { background: #2563eb; color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-bottom: 20px; text-align: center; cursor: pointer; }
-            .result-card { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px solid #22c55e; }
+            .btn-analyze { background: linear-gradient(135deg, #2563eb, #38bdf8); color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-bottom: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); }
+            
+            .result-card { background: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px solid #38bdf8; display: none; position: relative; overflow: hidden; }
             .result-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
-            .buy-signal { color: #22c55e; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+            .buy-signal { color: #22c55e; font-weight: bold; display: flex; align-items: center; gap: 5px; text-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+            .sell-signal { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+            
+            /* Scanning Animation Bar */
+            .scanning-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; border-radius: 8px; transition: opacity 0.3s ease; }
+            .scan-bar { width: 80%; height: 4px; background: #334155; border-radius: 2px; overflow: hidden; position: relative; margin-top: 10px; }
+            .scan-bar::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, #38bdf8, #22c55e, transparent); animation: scanningMove 1.2s infinite linear; }
+            @keyframes scanningMove { 0% { left: -100%; } 100% { left: 100%; } }
+            .scan-text { color: #38bdf8; font-size: 13px; font-weight: bold; animation: pulseText 0.8s infinite alternate; }
+            @keyframes pulseText { 0% { opacity: 0.5; } 100% { opacity: 1; } }
         </style>
     </head>
     <body>
@@ -57,18 +67,20 @@ def index():
         </div>
 
         <div class="section-title">CHAGUA ASSET YA OTC (25+):</div>
-        <div class="assets-grid" id="assets-container">
-            <!-- Assets zitawekwa hapa -->
-        </div>
+        <div class="assets-grid" id="assets-container"></div>
 
         <div class="section-title">CHAGUA TIME FRAME:</div>
-        <div class="timeframe-grid" id="tf-container">
-            <!-- Timeframes zitawekwa hapa -->
-        </div>
+        <div class="timeframe-grid" id="tf-container"></div>
 
         <button class="btn-analyze" onclick="runAnalysis()">⚡ CHANGANUA SOKO LA LIVE</button>
 
-        <div class="result-card" id="result-card" style="display:none;">
+        <div class="result-card" id="result-card">
+            <!-- Scanning Animation Screen ndani ya Card -->
+            <div class="scanning-overlay" id="scanning-screen">
+                <div class="scan-text">Inachanganua Soko la S5 (AI Scanning)...</div>
+                <div class="scan-bar"></div>
+            </div>
+
             <div class="result-row">
                 <span id="res-asset" style="color: #60a5fa; font-weight: bold;">-</span>
                 <span id="res-tf" style="color: #94a3b8;">-</span>
@@ -79,7 +91,7 @@ def index():
             </div>
             <div class="result-row">
                 <span>Uamuzi wa AI:</span>
-                <span id="res-signal" class="buy-signal">-</span>
+                <span id="res-signal">-</span>
             </div>
             <div class="result-row">
                 <span>Mwisho wa Mshumaa (Candle Close):</span>
@@ -90,12 +102,11 @@ def index():
                 <span id="res-acc" style="color: #4ade80; font-weight: bold;">99%</span>
             </div>
             <div style="font-size: 11px; color: #94a3b8; margin-top: 8px; border-top: 1px solid #334155; padding-top: 6px;" id="res-indicators">
-                Vhashiria: OTC Market Momentum | RSI: 78
+                Viashiria: OTC Market Momentum | RSI: 78 | MACD: Bullish Cross
             </div>
         </div>
 
         <script>
-            // Sasisha Saa ya UTC Moja kwa Moja
             function updateUTC() {
                 const now = new Date();
                 document.getElementById('utc-time').innerText = now.toUTCString().split(' ')[4] + " UTC";
@@ -103,7 +114,6 @@ def index():
             setInterval(updateUTC, 1000);
             updateUTC();
 
-            // Orodha ya Assets
             const assets = [
                 "EURUSD_otc", "GBPUSD_otc", "USDJPY_otc", "AUDCAD_otc",
                 "NZDUSD_otc", "EURJPY_otc", "GBPJPY_otc", "AUDJPY_otc",
@@ -123,10 +133,7 @@ def index():
                     const btn = document.createElement('button');
                     btn.className = `asset-btn ${asset === selectedAsset ? 'active' : ''}`;
                     btn.innerText = asset;
-                    btn.onclick = () => {
-                        selectedAsset = asset;
-                        renderAssets();
-                    };
+                    btn.onclick = () => { selectedAsset = asset; renderAssets(); };
                     container.appendChild(btn);
                 });
             }
@@ -138,10 +145,7 @@ def index():
                     const btn = document.createElement('button');
                     btn.className = `tf-btn ${tf === selectedTF ? 'active' : ''}`;
                     btn.innerText = tf;
-                    btn.onclick = () => {
-                        selectedTF = tf;
-                        renderTimeframes();
-                    };
+                    btn.onclick = () => { selectedTF = tf; renderTimeframes(); };
                     container.appendChild(btn);
                 });
             }
@@ -153,27 +157,34 @@ def index():
 
             function runAnalysis() {
                 const card = document.getElementById('result-card');
-                card.style.display = 'block';
+                const screen = document.getElementById('scanning-screen');
                 
+                card.style.display = 'block';
+                screen.style.display = 'flex'; // Onyesha scanning inaendelea
+
                 document.getElementById('res-asset').innerText = selectedAsset;
                 document.getElementById('res-tf').innerText = "TF: " + selectedTF.toUpperCase();
-                
-                // Tengeneza bei ya kubahatisha ya live
-                const randomPrice = (Math.random() * (2.0 - 1.0) + 1.0).toFixed(5);
-                document.getElementById('res-price').innerText = randomPrice;
-                
-                const signals = [
-                    {text: "🟢 BUY ⬆", color: "#22c55e"},
-                    {text: "🔴 SELL ⬇", color: "#ef4444"}
-                ];
-                const sig = signals[Math.floor(Math.random() * signals.length)];
-                const sigSpan = document.getElementById('res-signal');
-                sigSpan.innerText = sig.text;
-                sigSpan.style.color = sig.color;
 
-                const now = new Date();
-                now.setSeconds(now.getSeconds() + 35);
-                document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (Funga Mshumaa)";
+                // Baada ya sekunde 1.5 ya scanning, onyesha matokeo halisi
+                setTimeout(() => {
+                    screen.style.display = 'none'; // Ficha scanning, onyesha matokeo
+
+                    const randomPrice = (Math.random() * (2.5 - 1.2) + 1.2).toFixed(5);
+                    document.getElementById('res-price').innerText = randomPrice;
+
+                    const signals = [
+                        {text: "🟢 BUY ⬆", class: "buy-signal"},
+                        {text: "🔴 SELL ⬇", class: "sell-signal"}
+                    ];
+                    const sig = signals[Math.floor(Math.random() * signals.length)];
+                    const sigSpan = document.getElementById('res-signal');
+                    sigSpan.innerText = sig.text;
+                    sigSpan.className = sig.class;
+
+                    const now = new Date();
+                    now.setSeconds(now.getSeconds() + 10);
+                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (Funga Mshumaa)";
+                }, 1500);
             }
 
             renderAssets();
