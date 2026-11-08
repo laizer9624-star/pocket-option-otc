@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Icon halisi yenye background nyeupe na nembo sahihi */
+            /* Icon halisi yenye background nyeupe na uwiano kamili wa P na O */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -60,6 +60,7 @@ def index():
             .tf-btn { background: #1e293b; color: #cbd5e1; border: none; padding: 9px 5px; border-radius: 6px; font-size: 12px; text-align: center; cursor: pointer; border: 1px solid #334155; }
             .tf-btn.active { background: #059669; color: white; border-color: #34d399; font-weight: bold; }
             
+            /* Kitufe chenye maandishi safi ya Market Scanning */
             .btn-analyze { background: linear-gradient(135deg, #2563eb, #e11d48, #9333ea); background-size: 200% 200%; color: white; border: none; width: 100%; padding: 15px; border-radius: 8px; font-size: 15px; font-weight: bold; margin-bottom: 15px; text-align: center; cursor: pointer; animation: gradientAnim 2.5s ease infinite; box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); }
             @keyframes gradientAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
             
@@ -108,7 +109,8 @@ def index():
         <div class="section-title">CHAGUA TIME FRAME YA UCHAMBUZI:</div>
         <div class="timeframe-grid" id="tf-container"></div>
 
-        <button class="btn-analyze" onclick="runAnalysis()">⚡ CHAMBUA SOKO NA WEKA MUZIKI WA USHINDI</button>
+        <!-- Kitufe kilichosahihishwa kuwa Market Scanning -->
+        <button class="btn-analyze" onclick="runAnalysis()">⚡ Market Scanning</button>
 
         <div class="result-card" id="result-card">
             <div class="scanning-overlay" id="scanning-screen">
