@@ -8,11 +8,10 @@ auth = HTTPBasicAuth()
 
 # Weka hapa jina la mtumiaji na nenosiri unalolitaka kulinda tovuti yako
 users = {
-    "admin": "12345"
-}
+    "Porket option": "54321"}
 
 @auth.verify_password
-def verify_password(username, password):
+def verify_passwordusername, password):
     if username in users and users[username] == password:
         return username
 
