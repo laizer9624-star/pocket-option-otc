@@ -1,19 +1,16 @@
 from flask import Flask, render_template, request, jsonify
-from flask_httpauth import HTTPBasicAuth
+
 import random
 import time
 
 app = Flask(__name__)
-auth = HTTPBasicAuth()
+
 
 # Weka hapa jina la mtumiaji na nenosiri unalolitaka kulinda tovuti yako
 users = {
     "Porket option": "54321"}
 
-@auth.verify_password
-def verify_password(username, password):
-    if username in users and users[username] == password:
-        return username
+# Ulinzi umeondolewa
 
 # Hifadhi ya bei za ndani kwa ajili ya usomaji wa papo hapo (Direct Live Sync)
 live_cache = {
@@ -24,7 +21,7 @@ live_cache = {
 }
 
 @app.route('/')
-@auth.login_required
+
 def index():
     return render_template('main.html')
 
