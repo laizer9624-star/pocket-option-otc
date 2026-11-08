@@ -29,8 +29,20 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Nembo halisi ya Pocket Option iliyochongwa kwa ustadi ndani ya boksi */
-            .po-logo-box { width: 34px; height: 34px; background: #ffffff; border-radius: 8px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; }
+            /* Muonekano halisi wa App Icon yenye pembe za mviringo na background ya asili */
+            .po-app-icon {
+                width: 42px;
+                height: 42px;
+                background: linear-gradient(135deg, #7c3aed, #4f46e5);
+                border-radius: 12px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+                border: 1.5px solid rgba(255, 255, 255, 0.2);
+                position: relative;
+                overflow: hidden;
+            }
             
             .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 12px; animation: pulseLive 1.2s infinite ease-in-out; }
             @keyframes pulseLive { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
@@ -72,11 +84,11 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Nembo halisi ya Pocket Option ndani ya boksi safi kabisa -->
-                <div class="po-logo-box">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 6C3 4.89543 3.89543 4 5 4H11C13.7614 4 16 6.23858 16 9C16 11.7614 13.7614 14 11 14H7V18C7 19.1046 6.10464 20 5 20C3.89543 20 3 19.1046 3 18V6Z" fill="#0052FF"/>
-                        <circle cx="15" cy="13" r="6" fill="#00A3FF"/>
+                <!-- Icon halisi yenye umbo la app halisi ya Pocket Option -->
+                <div class="po-app-icon">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 6C3 4.89543 3.89543 4 5 4H11C13.7614 4 16 6.23858 16 9C16 11.7614 13.7614 14 11 14H7V18C7 19.1046 6.10464 20 5 20C3.89543 20 3 19.1046 3 18V6Z" fill="#FFFFFF"/>
+                        <circle cx="15" cy="13" r="5.5" fill="#38BDF8"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
