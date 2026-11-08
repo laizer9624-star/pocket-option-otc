@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Icon halisi yenye background nyeupe na umbo sahihi */
+            /* Icon yenye background nyeupe na nembo kubwa inayochukua robo tatu ya box */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -82,13 +82,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Icon yenye herufi P iliyofupishwa na kuwa mpana, pamoja na duara la O -->
+                <!-- Herufi kubwa za PO zinazochukua eneo kubwa (robo tatu) ndani ya box -->
                 <div class="po-app-icon">
-                    <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Herufi P ya bluu yenye umbo fupi na mpana wa duara (mviringo mpana) -->
-                        <path d="M 22 28 H 48 C 60 28 68 36 68 48 C 68 60 60 68 48 68 H 34 V 78 C 34 81 31 83 28 83 C 24 83 22 81 22 77 V 28 Z" fill="#0047FF"/>
-                        <!-- Duara la O la rangi ya Cyan/Sky Blue linaloingiliana nayo vizuri -->
-                        <circle cx="66" cy="48" r="20" fill="#00A3FF"/>
+                    <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Herufi P kubwa na pana ya bluu -->
+                        <path d="M 16 16 H 50 C 66 16 78 28 78 48 C 78 68 66 80 50 80 H 32 V 88 C 32 92 28 95 24 95 C 19 95 16 91 16 87 V 16 Z" fill="#0047FF"/>
+                        <!-- Duara kubwa la O la cyan linaloingiliana na P kwa ukaribu -->
+                        <circle cx="68" cy="48" r="28" fill="#00A3FF"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
