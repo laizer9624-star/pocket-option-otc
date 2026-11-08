@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Icon yenye background nyeupe na herufi P inayofunika kancha tu ya O */
+            /* Icon halisi yenye background nyeupe na nembo sahihi */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -82,7 +82,7 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Herufi P inafunika kancha tu ya duara la O kama inavyotakiwa -->
+                <!-- Icon halisi yenye background nyeupe na uwiano kamili wa P na O -->
                 <div class="po-app-icon">
                     <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <!-- Duara la O la cyan nyuma -->
@@ -304,4 +304,4 @@ def index():
     return render_template_string(html_template)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port5000)
+    app.run(host='0.0.0.0', port=5000)
