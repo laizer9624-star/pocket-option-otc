@@ -11,7 +11,7 @@ users = {
     "Porket option": "54321"}
 
 @auth.verify_password
-def verify_passwordusername, password):
+def verify_password(username, password):
     if username in users and users[username] == password:
         return username
 
