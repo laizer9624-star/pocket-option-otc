@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Icon yenye background nyeupe na herufi P juu ya duara la O */
+            /* Icon yenye background nyeupe na nembo ya P na O zikiwa zimesimama kwa usawa */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -82,13 +82,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Herufi P imewekwa juu, na duara la O lipo chini yake -->
+                <!-- Herufi P na O zimesimama kwa usawa (kushoto na kulia zikiwa zimeingiliana) kama kwenye picha -->
                 <div class="po-app-icon">
                     <svg width="38" height="38" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Herufi P ya bluu kwa juu -->
-                        <path d="M 18 16 H 48 C 64 16 74 26 74 43 C 74 59 64 69 48 69 H 32 V 75 C 32 78 29 80 25 80 C 21 80 18 78 18 74 V 16 Z" fill="#0047FF"/>
-                        <!-- Duara la O la cyan limekaa chini ya P -->
-                        <circle cx="62" cy="62" r="24" fill="#00A3FF"/>
+                        <!-- Herufi P ya bluu upande wa kushoto -->
+                        <path d="M 22 20 H 50 C 64 20 74 30 74 46 C 74 62 64 72 50 72 H 34 V 84 C 34 88 30 91 26 91 C 21 91 22 87 22 83 V 20 Z" fill="#0047FF"/>
+                        <!-- Duara la O la cyan upande wa kulia linaloingiliana na P -->
+                        <circle cx="68" cy="46" r="22" fill="#00A3FF"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
