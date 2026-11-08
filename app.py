@@ -29,19 +29,17 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Muonekano halisi wa App Icon yenye pembe za mviringo na background ya asili */
+            /* Icon halisi ya Pocket Option yenye muonekano kamili wa app */
             .po-app-icon {
-                width: 42px;
-                height: 42px;
-                background: linear-gradient(135deg, #7c3aed, #4f46e5);
+                width: 44px;
+                height: 44px;
+                background: linear-gradient(135deg, #5b21b6, #2563eb);
                 border-radius: 12px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-                border: 1.5px solid rgba(255, 255, 255, 0.2);
-                position: relative;
-                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+                border: 1.5px solid rgba(56, 189, 248, 0.4);
             }
             
             .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 12px; animation: pulseLive 1.2s infinite ease-in-out; }
@@ -84,11 +82,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Icon halisi yenye umbo la app halisi ya Pocket Option -->
+                <!-- Icon halisi yenye herufi PO na muundo kamili wa Pocket Option -->
                 <div class="po-app-icon">
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 6C3 4.89543 3.89543 4 5 4H11C13.7614 4 16 6.23858 16 9C16 11.7614 13.7614 14 11 14H7V18C7 19.1046 6.10464 20 5 20C3.89543 20 3 19.1046 3 18V6Z" fill="#FFFFFF"/>
-                        <circle cx="15" cy="13" r="5.5" fill="#38BDF8"/>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Herufi P ya bluu ya gizani yenye mkia -->
+                        <path d="M7 8C7 6.89543 7.89543 6 9 6H15C18.3137 6 21 8.68629 21 12C21 15.3137 18.3137 18 15 18H11V24C11 25.1046 10.1046 26 9 26C7.89543 26 7 25.1046 7 24V8Z" fill="#1d4ed8"/>
+                        <!-- Duara la O la bluu ya angani (Cyan/Sky blue) -->
+                        <circle cx="21" cy="18" r="6" fill="#38bdf8"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
