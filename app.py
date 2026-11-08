@@ -27,10 +27,11 @@ def index():
             body { background-color: #070a13; color: #f8fafc; font-family: Arial, sans-serif; margin: 0; padding: 12px; }
             .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; }
             
-            .brand-container { display: flex; align-items: center; gap: 10px; }
-            .pocket-logo { width: 34px; height: 34px; border-radius: 50%; background: #0f172a; padding: 2px; border: 2px solid #2563eb; object-fit: contain; box-shadow: 0 0 10px rgba(37, 99, 235, 0.5); }
+            .brand-container { display: flex; align-items: center; gap: 8px; }
+            /* Muonekano kamili na halisi wa icon ya Pocket Option */
+            .pocket-logo { width: 38px; height: 38px; border-radius: 10px; background: #ffffff; padding: 3px; object-fit: contain; box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); border: 1px solid #38bdf8; }
             
-            .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 6px; font-size: 13px; animation: pulseLive 1.2s infinite ease-in-out; }
+            .live-badge { color: #ef4444; font-weight: bold; display: flex; align-items: center; gap: 5px; font-size: 12px; animation: pulseLive 1.2s infinite ease-in-out; }
             @keyframes pulseLive { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
             
             .time-box { background: #0f172a; padding: 5px 10px; border-radius: 5px; font-size: 13px; color: #38bdf8; border: 1px solid #1e293b; }
@@ -70,8 +71,8 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Picha rasmi na nembo halisi ya Pocket Option -->
-                <img src="https://pocketoption.com/files/avatars/pocketoption_logo.png" alt="Pocket Option Logo" class="pocket-logo" onerror="this.src='https://static.vecteezy.com/system/resources/previews/024/093/815/non_2x/pocket-option-logo-transparent-free-png.png'">
+                <!-- Icon rasmi na halisi ya Pocket Option kama ulivyotuma kwenye picha -->
+                <img src="https://static.vecteezy.com/system/resources/previews/024/093/815/non_2x/pocket-option-logo-transparent-free-png.png" alt="Pocket Option Logo" class="pocket-logo">
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
             </div>
             <div class="time-box" id="utc-time">--:--:-- UTC</div>
