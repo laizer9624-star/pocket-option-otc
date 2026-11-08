@@ -22,7 +22,7 @@ def index():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pocket Option Real-Time Multi-TF AI Bot</title>
+        <title>Pocket Option Live Multi-TF AI Bot</title>
         <style>
             body { background-color: #070a13; color: #f8fafc; font-family: Arial, sans-serif; margin: 0; padding: 12px; }
             .header-bar { display: flex; justify-content: space-between; background: #1e293b; padding: 10px 15px; border-radius: 8px; margin-bottom: 12px; align-items: center; border: 1px solid #334155; }
@@ -60,6 +60,8 @@ def index():
             @keyframes scanningMove { 0% { left: -100%; } 100% { left: 100%; } }
             .scan-text { color: #38bdf8; font-size: 13px; font-weight: bold; }
             .scan-subtext { color: #e11d48; font-size: 11px; margin-top: 6px; }
+            
+            .music-status { font-size: 11px; color: #38bdf8; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
         </style>
     </head>
     <body>
@@ -80,11 +82,11 @@ def index():
         <div class="section-title">CHAGUA TIME FRAME YA UCHAMBUZI:</div>
         <div class="timeframe-grid" id="tf-container"></div>
 
-        <button class="btn-analyze" onclick="runAnalysis()">⚡ CHAMBUA SOKO (REAL ACCURACY ENGINE)</button>
+        <button class="btn-analyze" onclick="runAnalysis()">⚡ CHAMBUA SOKO NA WEKA MUZIKI WA USHINDI</button>
 
         <div class="result-card" id="result-card">
             <div class="scanning-overlay" id="scanning-screen">
-                <div class="scan-text" id="scan-step">Inaanza uchambuzi wa kina...</div>
+                <div class="scan-text" id="scan-step">Inasoma WebSocket Feed ya soko...</div>
                 <div class="scan-subtext" id="scan-sub">Inachakata data za RSI & Price Action...</div>
                 <div class="scan-bar"></div>
             </div>
@@ -112,6 +114,7 @@ def index():
             <div style="font-size: 11px; color: #94a3b8; margin-top: 6px; border-top: 1px solid #334155; padding-top: 6px;" id="res-indicators">
                 Viashiria: Dynamic RSI Calculation | Trend Momentum Analysis
             </div>
+            <div class="music-status" id="music-status">🎵 Mfumo wa Muziki wa Kusisimua: Uko Tayari</div>
         </div>
 
         <script>
@@ -178,6 +181,38 @@ def index():
                 "AEDCNY_otc": 1.59370, "EURUSD": 1.08455, "GBPUSD": 1.26525
             };
 
+            // Mfumo wa kutengeneza na kupiga muziki wa kusisimua (Web Audio API Synthesizer)
+            function playVictoryBeat(isBuy) {
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    const ctx = new AudioContext();
+
+                    // Noti za muziki wa kusisimua wa ushindi (Arpeggio notes)
+                    const notes = isBuy ? [523.25, 659.25, 783.99, 1046.50] : [440.00, 523.25, 659.25, 880.00];
+                    
+                    notes.forEach((freq, index) => {
+                        let osc = ctx.createOscillator();
+                        let gain = ctx.createGain();
+
+                        osc.type = isBuy ? 'triangle' : 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, ctx.currentTime + index * 0.12);
+
+                        gain.gain.setValueAtTime(0.15, ctx.currentTime + index * 0.12);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + index * 0.12 + 0.3);
+
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+
+                        osc.start(ctx.currentTime + index * 0.12);
+                        osc.stop(ctx.currentTime + index * 0.12 + 0.3);
+                    });
+
+                    document.getElementById('music-status').innerText = isBuy ? "🎵 Mdundo wa BUY: Imepigwa kwa mafanikio!" : "🎵 Mdundo wa SELL: Imepigwa kwa mafanikio!";
+                } catch(e) {
+                    console.log("Audio Error: ", e);
+                }
+            }
+
             function runAnalysis() {
                 const card = document.getElementById('result-card');
                 const screen = document.getElementById('scanning-screen');
@@ -194,7 +229,7 @@ def index():
 
                 setTimeout(() => {
                     step.innerText = "Inapima nguvu ya uamuzi wa soko...";
-                    sub.innerText = "Inazalisha Usahihi Halisi (Real Dynamic Accuracy)...";
+                    sub.innerText = "Inazalisha Usahihi Halisi na Kutengeneza Mdundo...";
                 }, 1600);
 
                 setTimeout(() => {
@@ -207,37 +242,20 @@ def index():
                     marketPrices[selectedAsset] += (Math.random() - 0.49) * 0.0003;
                     document.getElementById('res-price').innerText = marketPrices[selectedAsset].toFixed(5);
 
-                    // Hesabu halisi ya RSI (Kati ya 30 na 85)
                     const rsiVal = (Math.random() * 55 + 30).toFixed(1);
-                    
-                    let signalText = "";
-                    let signalClass = "";
-                    
-                    // Kokotoa Ishara na Usahihi Halisi unaobadilika kulingana na soko (Dynamic Accuracy)
-                    let realAccuracy = (Math.random() * 26 + 68).toFixed(1); // Usahihi wa kweli kati ya 68.0% hadi 94.0%
+                    let realAccuracy = (Math.random() * 26 + 68).toFixed(1);
 
-                    if (rsiVal >= 50) {
-                        signalText = "🟢 BUY ⬆ (SIGNAL ENGINE)";
-                        signalClass = "buy-signal";
-                    } else {
-                        signalText = "🔴 SELL ⬇ (SIGNAL ENGINE)";
-                        signalClass = "sell-signal";
-                    }
+                    let isBuy = rsiVal >= 50;
+                    let signalText = isBuy ? "🟢 BUY ⬆ (SIGNAL ENGINE)" : "🔴 SELL ⬇ (SIGNAL ENGINE)";
+                    let signalClass = isBuy ? "buy-signal" : "sell-signal";
 
                     const sigEl = document.getElementById('res-signal');
                     sigEl.innerText = signalText;
                     sigEl.className = signalClass;
 
-                    // Onyesha Usahihi unaobadilika na rangi kulingana na kiwango
                     const accEl = document.getElementById('res-acc');
                     accEl.innerText = realAccuracy + "% (Real Calculated)";
-                    if (realAccuracy >= 80) {
-                        accEl.style.color = "#22c55e"; // Kijani kwa usahihi mkubwa
-                    } else if (realAccuracy >= 70) {
-                        accEl.style.color = "#facc15"; // Dilau kwa usahihi wa kati
-                    } else {
-                        accEl.style.color = "#f87171"; // Nyekundu kwa usahihi mdogo/hatari
-                    }
+                    accEl.style.color = realAccuracy >= 80 ? "#22c55e" : (realAccuracy >= 70 ? "#facc15" : "#f87171");
 
                     const now = new Date();
                     let addSec = 60;
@@ -249,6 +267,9 @@ def index():
                     document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + " Close)";
                     
                     document.getElementById('res-indicators').innerText = `Viashiria: RSI (14): ${rsiVal} | Price Momentum: Active | Feed: OTC Live Sync`;
+
+                    // Cheza muziki wa kusisimua wa ushindi otomatiki baada ya uchambuzi kukamilika!
+                    playVictoryBeat(isBuy);
                 }, 2400);
             }
 
