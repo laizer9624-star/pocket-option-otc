@@ -29,7 +29,7 @@ def index():
             
             .brand-container { display: flex; align-items: center; gap: 10px; }
             
-            /* Background nyeupe halisi na umbo la icon ya Pocket Option */
+            /* Icon halisi yenye background nyeupe na umbo sahihi */
             .po-app-icon {
                 width: 44px;
                 height: 44px;
@@ -82,13 +82,13 @@ def index():
     <body>
         <div class="header-bar">
             <div class="brand-container">
-                <!-- Icon yenye background nyeupe na nembo pana halisi ya PO -->
+                <!-- Icon yenye herufi P iliyofupishwa na kuwa mpana, pamoja na duara la O -->
                 <div class="po-app-icon">
                     <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Herufi P ya bluu yenye upana na umbo halisi -->
-                        <path d="M 22 25 H 48 C 62 25 72 35 72 48 C 72 61 62 70 48 70 H 36 V 82 C 36 85 33 87 30 87 C 25 87 22 84 22 80 V 25 Z" fill="#1A56DB"/>
-                        <!-- Duara la O la rangi ya Cyan/Sky Blue linaloingiliana na P -->
-                        <circle cx="68" cy="48" r="21" fill="#00A3FF"/>
+                        <!-- Herufi P ya bluu yenye umbo fupi na mpana wa duara (mviringo mpana) -->
+                        <path d="M 22 28 H 48 C 60 28 68 36 68 48 C 68 60 60 68 48 68 H 34 V 78 C 34 81 31 83 28 83 C 24 83 22 81 22 77 V 28 Z" fill="#0047FF"/>
+                        <!-- Duara la O la rangi ya Cyan/Sky Blue linaloingiliana nayo vizuri -->
+                        <circle cx="66" cy="48" r="20" fill="#00A3FF"/>
                     </svg>
                 </div>
                 <div class="live-badge">🔴 POCKET OPTION LIVE</div>
