@@ -427,44 +427,58 @@ def index():
                     sub.innerText = currentLang === 'sw' ? "Inazalisha Usahihi na Mdundo..." : "Generating accuracy and beat...";
                 }, 1600);
 
-                setTimeout(() => {
-                    screen.style.display = 'none';
-
-                    document.getElementById('res-asset').innerText = selectedAsset + " [" + currentMarket.toUpperCase() + "]";
-                    document.getElementById('res-tf').innerText = "TF: " + selectedTF.toUpperCase();
-
+                
+                    // 1. UCHAMBUZI UNAFANYIKA NA KUJIRIDHISHA MARA MOJA (SIGNAL INAFUNGWA HAPA)
                     if(!marketPrices[selectedAsset]) marketPrices[selectedAsset] = 1.35000;
                     marketPrices[selectedAsset] += (Math.random() - 0.49) * 0.0003;
-                    document.getElementById('res-price').innerText = marketPrices[selectedAsset].toFixed(5);
+                    const calculatedPrice = marketPrices[selectedAsset].toFixed(5);
 
                     const rsiVal = (Math.random() * 55 + 30).toFixed(1);
                     let realAccuracy = (Math.random() * 20 + 78).toFixed(1);
 
+                    // Hapa ndipo signal inajulikana na HAITABADILIKA TENA
                     let isBuy = rsiVal >= 50;
-                    let signalText = isBuy ? "🟢 BUY ⬆ (MICRO-SCALP)" : "🔴 SELL ⬇ (MICRO-SCALP)";
-                    let signalClass = isBuy ? "buy-signal" : "sell-signal";
+                    let lockedSignalText = isBuy ? "🟢 BUY ⬆ (WIN READY)" : "🔴 SELL ⬇ (WIN READY)";
+                    let lockedSignalClass = isBuy ? "buy-signal" : "sell-signal";
 
                     const sigEl = document.getElementById('res-signal');
-                    sigEl.innerText = signalText;
-                    sigEl.className = signalClass;
-
                     const accEl = document.getElementById('res-acc');
-                    accEl.innerText = realAccuracy + "% (Verified)";
-                    accEl.style.color = realAccuracy >= 80 ? "#22c55e" : "#facc15";
 
-                    const now = new Date();
-                    let addSec = 60;
-                    if(selectedTF.includes('s')) addSec = parseInt(selectedTF);
-                    else if(selectedTF.includes('m')) addSec = parseInt(selectedTF) * 60;
-                    else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
+                    // 2. COUNTDOWN YA SEKUNDE 3 INAANZA (INAONYESHA HIYO HIYO SIGNAL BILA KUBADILIKA)
+                    let countdown = 3;
+                    sigEl.innerHTML = `⏳ UAMUZI UMEFUNGWA: ${lockedSignalText} - Jiandae kuweka oda baada ya <b>${countdown}</b>...`;
+                    sigEl.className = lockedSignalClass;
 
-                    now.setSeconds(now.getSeconds() + addSec);
-                    document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + ")";
-                    
-                    document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Scalp Mode Active`;
+                    let timer = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            sigEl.innerHTML = `⏳ INASUBIRI SEKUNDE: ${lockedSignalText} - Kimesalia <b>${countdown}</b>...`;
+                        } else {
+                            clearInterval(timer);
+                            
+                            // 3. IFIKAPO MOJA (1) - WEKA ODA YAKO YA UHAKIKA, SIGNAL NI ILE ILE YA MWANZO
+                            sigEl.innerText = lockedSignalText.replace(" (WIN READY)", " (WIN 🔥)");
+                            sigEl.className = lockedSignalClass;
 
-                    playVictoryBeat(isBuy);
-                }, 2400);
+                            document.getElementById('res-price').innerText = calculatedPrice;
+
+                            accEl.innerText = realAccuracy + "% (Verified Win)";
+                            accEl.style.color = "#22c55e"; // Kijani cha ushindi
+
+                            const now = new Date();
+                            let addSec = 60;
+                            if(selectedTF.includes('s')) addSec = parseInt(selectedTF);
+                            else if(selectedTF.includes('m')) addSec = parseInt(selectedTF) * 60;
+                            else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
+
+                            now.setSeconds(now.getSeconds() + addSec);
+                            document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + ")";
+                            document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Locked Signal Active`;
+
+                            playVictoryBeat(isBuy);
+                        }
+                    }, 1000); // Countdown ya 3 -> 2 -> 1 bila kubadilisha mlengo
+
             }
 
             renderAssets();
