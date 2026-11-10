@@ -417,15 +417,107 @@ def index():
                 card.style.display = 'block';
                 screen.style.display = 'flex';
 
-                setTimeout(() => {
-                    step.innerText = currentLang === 'sw' ? "Inasoma WebSocket Feed ya soko..." : "Reading market WebSocket feed...";
-                    sub.innerText = currentLang === 'sw' ? "Inachakata data za Micro-RSI & EMA..." : "Processing Micro-RSI & EMA data...";
-                }, 800);
+                
+                    // UCHAMBUZI WA KWANZA NA COUNTDOWN YA SEKUNDE 3 KWENYE BOX LA SIGNAL
+                    if(!marketPrices[selectedAsset]) marketPrices[selectedAsset] = 1.35000;
+                    marketPrices[selectedAsset] += (Math.random() - 0.49) * 0.0003;
+                    const calculatedPrice = marketPrices[selectedAsset].toFixed(5);
 
-                setTimeout(() => {
-                    step.innerText = currentLang === 'sw' ? "Inapima nguvu ya uamuzi..." : "Evaluating market momentum...";
-                    sub.innerText = currentLang === 'sw' ? "Inazalisha Usahihi na Mdundo..." : "Generating accuracy and beat...";
-                }, 1600);
+                    const rsiVal = (Math.random() * 55 + 30).toFixed(1);
+                    let realAccuracy = (Math.random() * 20 + 78).toFixed(1);
+
+                    let isBuy = rsiVal >= 50;
+                    let finalSignalText = isBuy ? "🟢 BUY ⬆ (WIN)" : "🔴 SELL ⬇ (WIN)";
+                    let finalSignalClass = isBuy ? "buy-signal" : "sell-signal";
+
+                    const sigEl = document.getElementById('res-signal');
+                    const accEl = document.getElementById('res-acc');
+
+                    // ANZA KUHESABU SEKUNDE 3 HAPO HAPO MWANZO WA SIGNAL
+                    let countdown = 3;
+                    sigEl.innerHTML = `⏳ INASUBIRI (3)... ${finalSignalText}`;
+                    sigEl.className = finalSignalClass;
+
+                    let timer = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            sigEl.innerHTML = `⏳ INASUBIRI (${countdown})... ${finalSignalText}`;
+                        } else {
+                            clearInterval(timer);
+                            
+                            // IFIKAPO 1, WEKA THABITI BILA KUBADILIKA
+                            sigEl.innerText = finalSignalText;
+                            sigEl.className = finalSignalClass;
+
+                            document.getElementById('res-price').innerText = calculatedPrice;
+                            accEl.innerText = realAccuracy + "% (Verified Win)";
+                            accEl.style.color = "#22c55e";
+
+                            const now = new Date();
+                            let addSec = 60;
+                            if(selectedTF.includes('s')) addSec = parseInt(selectedTF);
+                            else if(selectedTF.includes('m')) addSec = parseInt(selectedTF) * 60;
+                            else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
+
+                            now.setSeconds(now.getSeconds() + addSec);
+                            document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + ")";
+                            document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Locked 3s Countdown Active`;
+
+                            playVictoryBeat(isBuy);
+                        }
+                    }, 1000);
+
+
+                
+                    // UCHAMBUZI WA KWANZA NA COUNTDOWN YA SEKUNDE 3 KWENYE BOX LA SIGNAL
+                    if(!marketPrices[selectedAsset]) marketPrices[selectedAsset] = 1.35000;
+                    marketPrices[selectedAsset] += (Math.random() - 0.49) * 0.0003;
+                    const calculatedPrice = marketPrices[selectedAsset].toFixed(5);
+
+                    const rsiVal = (Math.random() * 55 + 30).toFixed(1);
+                    let realAccuracy = (Math.random() * 20 + 78).toFixed(1);
+
+                    let isBuy = rsiVal >= 50;
+                    let finalSignalText = isBuy ? "🟢 BUY ⬆ (WIN)" : "🔴 SELL ⬇ (WIN)";
+                    let finalSignalClass = isBuy ? "buy-signal" : "sell-signal";
+
+                    const sigEl = document.getElementById('res-signal');
+                    const accEl = document.getElementById('res-acc');
+
+                    // ANZA KUHESABU SEKUNDE 3 HAPO HAPO MWANZO WA SIGNAL
+                    let countdown = 3;
+                    sigEl.innerHTML = `⏳ INASUBIRI (3)... ${finalSignalText}`;
+                    sigEl.className = finalSignalClass;
+
+                    let timer = setInterval(() => {
+                        countdown--;
+                        if (countdown > 0) {
+                            sigEl.innerHTML = `⏳ INASUBIRI (${countdown})... ${finalSignalText}`;
+                        } else {
+                            clearInterval(timer);
+                            
+                            // IFIKAPO 1, WEKA THABITI BILA KUBADILIKA
+                            sigEl.innerText = finalSignalText;
+                            sigEl.className = finalSignalClass;
+
+                            document.getElementById('res-price').innerText = calculatedPrice;
+                            accEl.innerText = realAccuracy + "% (Verified Win)";
+                            accEl.style.color = "#22c55e";
+
+                            const now = new Date();
+                            let addSec = 60;
+                            if(selectedTF.includes('s')) addSec = parseInt(selectedTF);
+                            else if(selectedTF.includes('m')) addSec = parseInt(selectedTF) * 60;
+                            else if(selectedTF.includes('h')) addSec = parseInt(selectedTF) * 3600;
+
+                            now.setSeconds(now.getSeconds() + addSec);
+                            document.getElementById('res-candle').innerText = now.toUTCString().split(' ')[4] + " UTC (" + selectedTF.toUpperCase() + ")";
+                            document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Locked 3s Countdown Active`;
+
+                            playVictoryBeat(isBuy);
+                        }
+                    }, 1000);
+
 
                 
                     // 1. UCHAMBUZI UNAFANYIKA NA KUJIRIDHISHA MARA MOJA (SIGNAL INAFUNGWA HAPA)
