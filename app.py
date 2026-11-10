@@ -473,6 +473,29 @@ def index():
                             document.getElementById('res-indicators').innerText = `RSI(9): ${rsiVal} | Locked 3s Countdown Active`;
 
                             playVictoryBeat(isBuy);
+
+                    // COUNTDOWN YA KUINGIA SOKONI KWA WAKATI SAHIHI
+                    let postCountdown = 3;
+                    const sigBox = document.getElementById('res-signal');
+                    if(sigBox) {
+                        let originalSignal = sigBox.innerHTML;
+                        let originalClass = sigBox.className;
+
+                        sigBox.innerHTML = `⏳ JIANDAE KUINGIA (3)...`;
+                        sigBox.className = "text-yellow-400";
+
+                        let postTimer = setInterval(() => {
+                            postCountdown--;
+                            if (postCountdown > 0) {
+                                sigBox.innerHTML = `⏳ INGIA BAADA YA (${postCountdown})...`;
+                                sigBox.className = "text-yellow-400";
+                            } else {
+                                clearInterval(postTimer);
+                                sigBox.innerHTML = `🚀 INGIA SASA! — ${originalSignal}`;
+                                sigBox.className = originalClass;
+                            }
+                        }, 1000);
+                    }
                         }
                     }, 1000);
 
