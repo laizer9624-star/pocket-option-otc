@@ -474,6 +474,26 @@ def index():
 
                             playVictoryBeat(isBuy);
 
+                            // COUNTDOWN YA KATIKATI YA BOKSI LA SIGNAL (3, 2, 1 -> INGIA SASA)
+                            let countdownVal = 3;
+                            let actualSignalText = sigEl.innerHTML;
+                            let actualSignalClass = sigEl.className;
+
+                            sigEl.innerHTML = `⏳ JIANDAE (3)...`;
+                            sigEl.className = "text-yellow-400 font-bold text-lg";
+
+                            let timerInterval = setInterval(() => {
+                                countdownVal--;
+                                if (countdownVal > 0) {
+                                    sigEl.innerHTML = `⏳ KUINGIA (${countdownVal})...`;
+                                    sigEl.className = "text-yellow-400 font-bold text-lg";
+                                } else {
+                                    clearInterval(timerInterval);
+                                    sigEl.innerHTML = `🚀 INGIA SASA! (${actualSignalText})`;
+                                    sigEl.className = actualSignalClass + " font-bold text-xl";
+                                }
+                            }, 1000);
+
                     // COUNTDOWN YA KUINGIA SOKONI KWA WAKATI SAHIHI
                     let postCountdown = 3;
                     const sigBox = document.getElementById('res-signal');
@@ -601,28 +621,7 @@ def index():
 
                             playVictoryBeat(isBuy);
 
-                            // COUNTDOWN YA MUDA SAHIHI WA KUINGIA (INGIA SASA)
-                            let postCountdown = 3;
-                            const sigBox = document.getElementById('res-signal');
-                            if(sigBox) {
-                                let originalSignal = sigBox.innerHTML;
-                                let originalClass = sigBox.className;
-
-                                sigBox.innerHTML = `⏳ JIANDAE KUINGIA (3)...`;
-                                sigBox.className = "text-yellow-400";
-
-                                let postTimer = setInterval(() => {
-                                    postCountdown--;
-                                    if (postCountdown > 0) {
-                                        sigBox.innerHTML = `⏳ INGIA BAADA YA (${postCountdown})...`;
-                                        sigBox.className = "text-yellow-400";
-                                    } else {
-                                        clearInterval(postTimer);
-                                        sigBox.innerHTML = `🚀 INGIA SASA! — ${originalSignal}`;
-                                        sigBox.className = originalClass;
-                                    }
-                                }, 1000);
-                            }
+                            
                         }
                     }, 1000); // Countdown ya 3 -> 2 -> 1 bila kubadilisha mlengo
 
