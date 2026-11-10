@@ -409,6 +409,15 @@ def index():
             }
 
             function runAnalysis() {
+    // COUNTDOWN YA SEKUNDE 3 KABLA YA MATOKEO KUTOKA
+    const sigEl = document.getElementById('res-signal');
+    const accEl = document.getElementById('res-acc');
+    
+    if(sigEl) {
+        sigEl.innerHTML = `⏳ UAMUZI UNAFUNGWA (3)... Jiandae`;
+        sigEl.className = "text-yellow-400";
+    }
+    
                 const card = document.getElementById('result-card');
                 const screen = document.getElementById('scanning-screen');
                 const step = document.getElementById('scan-step');
@@ -583,3 +592,5 @@ def index():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
+// Countdown added
