@@ -474,23 +474,23 @@ def index():
 
                             playVictoryBeat(isBuy);
 
-                            // COUNTDOWN MPYA YA 3, 2, 1 NDANI YA BOKSI LA SIGNAL
+                            // COUNTDOWN YA MOTO YA 3, 2, 1
                             let cVal = 3;
                             let sText = sigEl.innerHTML;
                             let sClass = sigEl.className;
 
-                            sigEl.innerHTML = `⏳ JIANDAE (3)...`;
-                            sigEl.className = "text-yellow-400 font-bold text-lg";
+                            sigEl.innerHTML = `🔥 JIANDAE (3) 🔥`;
+                            sigEl.className = "text-yellow-400 font-bold text-xl animate-pulse";
 
                             let tInt = setInterval(() => {
                                 cVal--;
                                 if (cVal > 0) {
-                                    sigEl.innerHTML = `⏳ KUINGIA (${cVal})...`;
-                                    sigEl.className = "text-yellow-400 font-bold text-lg";
+                                    sigEl.innerHTML = `🔥 SUBIRI (${cVal}) 🔥`;
+                                    sigEl.className = "text-yellow-400 font-bold text-xl animate-pulse";
                                 } else {
                                     clearInterval(tInt);
-                                    sigEl.innerHTML = `🚀 INGIA SASA! (${sText})`;
-                                    sigEl.className = sClass + " font-bold text-xl";
+                                    sigEl.innerHTML = `🚀 INGIA SASA! ➔ ${sText}`;
+                                    sigEl.className = sClass + " font-bold text-2xl";
                                 }
                             }, 1000);
 
