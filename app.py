@@ -474,7 +474,26 @@ def index():
 
                             playVictoryBeat(isBuy);
 
-                            // COUNTDOWN YA KATIKATI YA BOKSI LA SIGNAL (3, 2, 1 -> INGIA SASA)
+                            // COUNTDOWN MPYA YA 3, 2, 1 NDANI YA BOKSI LA SIGNAL
+                            let cVal = 3;
+                            let sText = sigEl.innerHTML;
+                            let sClass = sigEl.className;
+
+                            sigEl.innerHTML = `⏳ JIANDAE (3)...`;
+                            sigEl.className = "text-yellow-400 font-bold text-lg";
+
+                            let tInt = setInterval(() => {
+                                cVal--;
+                                if (cVal > 0) {
+                                    sigEl.innerHTML = `⏳ KUINGIA (${cVal})...`;
+                                    sigEl.className = "text-yellow-400 font-bold text-lg";
+                                } else {
+                                    clearInterval(tInt);
+                                    sigEl.innerHTML = `🚀 INGIA SASA! (${sText})`;
+                                    sigEl.className = sClass + " font-bold text-xl";
+                                }
+                            }, 1000);
+
                             let countdownVal = 3;
                             let actualSignalText = sigEl.innerHTML;
                             let actualSignalClass = sigEl.className;
@@ -501,7 +520,6 @@ def index():
                         let originalSignal = sigBox.innerHTML;
                         let originalClass = sigBox.className;
 
-                        sigBox.innerHTML = `⏳ JIANDAE KUINGIA (3)...`;
                         sigBox.className = "text-yellow-400";
 
                         let postTimer = setInterval(() => {
