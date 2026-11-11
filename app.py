@@ -87,13 +87,23 @@ def index():
         </style>
     </head>
     <body class="p-4 flex flex-col items-center justify-center min-h-screen">
-        <div class="max-w-md w-full bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700">
-            <div class="flex justify-between items-center mb-4">
-                <h1 class="text-lg font-bold text-emerald-400">PocketOption Bot</h1>
-                <div>
-                    <a href="/?lang=sw" class="text-xs px-2 py-1 bg-slate-700 rounded hover:bg-slate-600">Swahili</a>
-                    <a href="/?lang=en" class="text-xs px-2 py-1 bg-slate-700 rounded hover:bg-slate-600">English</a>
-                </div>
+        <select onchange="location.href='/?lang='+this.value" style="background: #1f2937; color: white; padding: 4px 8px; border-radius: 6px; border: 1px solid #374151; font-size: 12px;">
+    <option value="sw">🇹🇿 SW</option>
+    <option value="en">🇬🇧 EN</option>
+    <option value="fr">🇫🇷 FR</option>
+    <option value="es">🇪🇸 ES</option>
+    <option value="de">🇩🇪 DE</option>
+    <option value="pt">🇵🇹 PT</option>
+    <option value="ar">🇸🇦 AR</option>
+    <option value="ru">🇷🇺 RU</option>
+    <option value="hi">🇮🇳 HI</option>
+    <option value="zh">🇨🇳 ZH</option>
+    <option value="tr">🇹🇷 TR</option>
+    <option value="id">🇮🇩 ID</option>
+    <option value="vi">🇻🇳 VI</option>
+    <option value="ko">🇰🇷 KO</option>
+    <option value="ja">🇯🇵 JA</option>
+</select>
             </div>
 
             <p class="text-sm text-slate-400 mb-4">{t['welcome']}</p>
