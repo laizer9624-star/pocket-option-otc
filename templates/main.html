@@ -157,9 +157,8 @@
         }
     </style>
 </head>
-
 <body>
-    <!-- Menyu ya Lugha 10 -->
+    <!-- Menyu ya Lugha 15 -->
     <div style="padding: 10px; background: #111827; text-align: right;">
         <select id="lang-picker" onchange="changeLanguage(this.value)" style="background: #1f2937; color: white; padding: 5px 10px; border-radius: 5px; border: 1px solid #374151;">
             <option value="sw">🇹🇿 SW (Swahili)</option>
@@ -172,9 +171,13 @@
             <option value="ru">🇷🇺 RU (Русский)</option>
             <option value="hi">🇮🇳 HI (हिन्दी)</option>
             <option value="zh">🇨🇳 ZH (中文)</option>
+            <option value="tr">🇹🇷 TR (Türkçe)</option>
+            <option value="id">🇮🇩 ID (Bahasa Indonesia)</option>
+            <option value="vi">🇻🇳 VI (Tiếng Việt)</option>
+            <option value="ko">🇰🇷 KO (한국어)</option>
+            <option value="ja">🇯🇵 JA (日本語)</option>
         </select>
     </div>
-
 
     <div class="container">
         <div class="live-header">
@@ -191,7 +194,6 @@
             <button class="btn" id="btn-std" onclick="setMarket('standard')">🌐 Standard Market</button>
         </div>
 
-        <!-- Orodha ya Masoko ya OTC -->
         <div id="otc-container" class="market-section active">
             <div class="section-title">CHAGUA ASSET YA OTC (25+):</div>
             <div class="grid" id="asset-grid-otc">
@@ -214,7 +216,6 @@
             </div>
         </div>
 
-        <!-- Orodha ya Masoko ya Standard -->
         <div id="std-container" class="market-section">
             <div class="section-title">CHAGUA ASSET YA STANDARD:</div>
             <div class="grid" id="asset-grid-std">
@@ -291,14 +292,11 @@
             let hours = now.getUTCHours();
             let minutes = now.getUTCMinutes();
             let seconds = now.getUTCSeconds();
-
             hours = hours < 10 ? "0" + hours : hours;
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-
             document.getElementById('market-countdown').innerText = hours + ":" + minutes + ":" + seconds + " UTC";
         }
-
         setInterval(updateGlobalClock, 1000);
         updateGlobalClock();
 
@@ -306,7 +304,6 @@
             selectedMarket = market;
             document.getElementById('btn-otc').classList.toggle('active', market === 'otc');
             document.getElementById('btn-std').classList.toggle('active', market === 'standard');
-
             if (market === 'otc') {
                 document.getElementById('otc-container').classList.add('active');
                 document.getElementById('std-container').classList.remove('active');
@@ -335,10 +332,8 @@
         function analyzeMarket() {
             const btn = document.getElementById('scan-btn');
             const resBox = document.getElementById('result-box');
-            
             btn.disabled = true;
             resBox.classList.add('scanning');
-
             document.getElementById('res-asset').innerText = selectedAsset;
             document.getElementById('res-tf').innerText = "TF: " + selectedTf.toUpperCase();
             document.getElementById('res-price').innerText = "Inasoma Live...";
@@ -346,27 +341,23 @@
             document.getElementById('res-expiry').innerText = "Inakotoa Muda wa Mshumaa...";
             document.getElementById('res-acc').innerText = "--%";
             document.getElementById('res-reason').innerText = "Inachambua Order Book & Live Volume...";
-
+            
             setTimeout(() => {
                 btn.style.background = '#8b5cf6';
                 btn.innerText = "🔄 [==>........] Inasoma Viashiria vya Soko...";
             }, 800);
-
             setTimeout(() => {
                 btn.style.background = '#d97706';
                 btn.innerText = "🔍 [=====>.....] Inapima Nguvu ya Mshumaa...";
             }, 2200);
-
             setTimeout(() => {
                 btn.style.background = '#0284c7';
                 btn.innerText = "📊 [========>..] Inasawazisha na Mshumaa Unaofunga...";
             }, 3600);
-
             setTimeout(() => {
                 btn.style.background = '#ea580c';
                 btn.innerText = "📈 [==========>] AI Inafunga Hesabu za Entry...";
             }, 5000);
-
             setTimeout(() => {
                 btn.style.background = '#059669';
                 btn.innerText = "⚡ Signal Halisi Imethibitishwa!";
@@ -383,7 +374,6 @@
                     document.getElementById('res-asset').innerText = data.asset;
                     document.getElementById('res-tf').innerText = "TF: " + data.timeframe.toUpperCase();
                     document.getElementById('res-price').innerText = data.price;
-                    
                     const signalEl = document.getElementById('res-signal');
                     if (data.signal.includes('BUY')) {
                         signalEl.innerHTML = "🟢 BUY ⬆️";
@@ -392,12 +382,9 @@
                         signalEl.innerHTML = "🔴 SELL ⬇️";
                         signalEl.style.color = "#f87171";
                     }
-
-                    // Hesabu sahihi ya kufunga kwa Mshumaa (Exact Candle Close Calculation)
                     const now = new Date();
                     let totalSecs = now.getUTCHours() * 3600 + now.getUTCMinutes() * 60 + now.getUTCSeconds();
                     let tfSecs = 5;
-
                     if (selectedTf === 's4') tfSecs = 4;
                     else if (selectedTf === 's10') tfSecs = 10;
                     else if (selectedTf === 's15') tfSecs = 15;
@@ -405,7 +392,6 @@
                     else if (selectedTf.includes('m')) tfSecs = parseInt(selectedTf) * 60;
                     else if (selectedTf.includes('h')) tfSecs = parseInt(selectedTf) * 3600;
 
-                    // Tafuta ni sekunde ngapi zimebakia kabla ya mshumaa wa sasa kufungwa na mpya kuanza
                     let remainder = totalSecs % tfSecs;
                     let secsToNextClose = tfSecs - remainder;
                     if (secsToNextClose === 0) secsToNextClose = tfSecs;
