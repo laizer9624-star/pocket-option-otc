@@ -56,7 +56,7 @@ translations = {
     "hi": {
         "title": "PocketOption बॉट में आपका स्वागत है",
         "welcome": "लाइव विश्लेषण और सिग्नल प्रणाली",
-        "select_lang": "भाषा चुन their",
+        "select_lang": "भाषा चुनें",
         "btn_signal": "नया सिग्नल प्राप्त करें"
     },
     "zh": {
@@ -64,13 +64,6 @@ translations = {
         "welcome": "实时分析和信号系统",
         "select_lang": "选择语言",
         "btn_signal": "获取新信号"
-    }
-},
-    "en": {
-        "title": "Welcome to PocketOption Bot",
-        "welcome": "Live Analysis and Signal System",
-        "select_lang": "Select Language",
-        "btn_signal": "Get New Signal"
     }
 }
 
